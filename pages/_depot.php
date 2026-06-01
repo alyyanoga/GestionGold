@@ -12,7 +12,7 @@
 
     /* TOUJOURS charger les utilisateurs */
 
-    $sql = "SELECT * FROM Clients";
+    $sql = "SELECT * FROM clients";
     $result = mysqli_query($conn, $sql);
 
       /* CHARGEMENT DES DONNEES DE LA TABLE MOUVEMENT_TOTALES */
@@ -75,7 +75,6 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
     /*----INSERTION DANS LA TABLE MOUVEMENT CAISE------*/
 
-    
     $Debit = (int) str_replace(' ', '', $_POST['txtMontant']);
     $Credit = "0";
     $Transaction = $Nature;
@@ -101,7 +100,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Date,
             $Compte,
             $Client,
-            $R_client,
+            "DEPOT / ". $R_client,
             $Prix,
             $Quantite,
             $Montant_depot,
@@ -121,7 +120,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
         $save = ajout_caisse(
             $Date,
-            $Client,
+            "DEPOT / ".$Client,
             $Debit,
             $Credit,
             $nouveau_solde_caisse,
@@ -192,7 +191,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Date,
             $Compte,
             $Client,
-            $R_client,
+            "DEPOT / ". $R_client,
             $Prix,
             $Quantite,
             $Montant_depot,
@@ -271,7 +270,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                     </div>
                   <div class="lbl-fiel">
                       <label class="lbl">Rep. Client:</label>
-                      <input type="text" class="repclient" value="<?php echo ($client_data['Prenom'] ?? '') . ' ' . ($client_data['Nom'] ?? ''). ' ' . ($client_data['Telephone'] ?? ''); ?>" name="txtRepClient" id="txtRepClient" readonly>
+                      <input type="text" class="repclient" value="<?php echo ($client_data['Prenom'] ?? '') . ' ' . ($client_data['Nom'] ?? ''). ' ' . ($client_data['Telephone'] ?? ''); ?>" name="txtRepClient" id="txtRepClient" >
                   </div>
                   <div class="btn-valider">
                     <button type="submit" name="btn_valider_depot" class="btn_valider" id="btn_valider" readonly> DEPOT</button>
@@ -285,32 +284,64 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             <table border="1" class="table-mouvement">
 
               <tr>
-                  <th>Date</th>
-                  <th>Représentant Client</th>
-                  <th>Prix</th>
-                  <th>Quantité</th>
-                  <th>Montant dépot</th>
-                  <th>Montant retrait</th>
-                  <th>Solde disponible</th>
-                  <th>Transactions</th>
-                  <th>Heure</th>
-                  <th>Utilisateur</th>
+                  <th style="text-align: left;">Voir</th>
+                  <th style="text-align: left;">Date</th>
+                  <th style="text-align: left;">Représentant Client</th>
+                  <th style="text-align: left;">Prix</th>
+                  <th style="text-align: left;">Quantité</th>
+                  <th style="text-align: left;">Montant dépot</th>
+                  <th style="text-align: left;">Montant retrait</th>
+                  <th style="text-align: left;">Solde disponible</th>
+                  <th style="text-align: left;">Transactions</th>
+                  <th style="text-align: left;">Heure</th>
+                  <th style="text-align: left;">Utilisateur</th>
+                  
               </tr>
               <?php if ($result2 && mysqli_num_rows($result2) > 0) { ?>
 
                             <?php while($row = mysqli_fetch_assoc($result2)) { ?>
+                                    
+                                    <td>
+                                 <?php
+                                        if($row['Transactions'] == 'DEPOT ARGENT')
+                                        {
+                                    ?>
 
-                                <tr>
-                                    <td><?php echo date('d/m/Y', strtotime($row['Date'])); ?></td>
-                                    <td><?php echo $row['R_client']; ?></td>
-                                    <td><?php echo number_format($row['Prix'], 0, ',', ' '); ?></td>
-                                    <td><?php echo number_format($row['Quantite'], 0, ',', ' '); ?></td>
-                                    <td><?php echo number_format($row['Montant_depot'], 0, ',', ' '); ?></td>
-                                    <td><?php echo number_format($row['Montant_retrait'], 0, ',', ' '); ?></td>
-                                    <td><?php echo number_format($row['Solde'], 0, ',', ' '); ?></td>
-                                    <td><?php echo $row['Transactions']; ?></td>
-                                    <td><?php echo $row['Heure']; ?></td>
-                                    <td><?php echo $row['Utilisateur']; ?></td>
+                                    <button
+                                    onclick="window.open('../pdf/facture_depot.php?Id=<?= $row['Id'] ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+
+                                    <?php
+                                        }
+                                        else if($row['Transactions'] == 'RETRAIT ARGENT')
+                                        {
+                                    ?>
+
+                                    <button
+                                    onclick="window.open('../pdf/facture_retrait.php?Id=<?= $row['Id'] ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+
+                                    <?php } ?>
+                                     </td>
+
+                                    <td style="text-align: left;"><?php echo date('d/m/Y', strtotime($row['Date'])); ?></td>
+                                    <td style="text-align: left;"><?php echo $row['R_client']; ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Prix'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Quantite'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Montant_depot'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Montant_retrait'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Solde'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo $row['Transactions']; ?></td>
+                                    <td style="text-align: left;"><?php echo $row['Heure']; ?></td>
+                                    <td style="text-align: left;"><?php echo $row['Utilisateur']; ?></td>
                                     
                                 </tr>
 
@@ -340,8 +371,12 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
         </span>
 
         <h3>Liste des clients</h3>
-
-       <table border="1" class="table-client">
+		<div class="barre_recherche">
+            <input type="text" class="rechercheClient" id="rechercheClient" placeholder="Rechercher un client..." onkeyup="filtrerClient()">
+        </div>
+            <br>
+    <div class="table-responsive">
+       <table border="1" class="table-client" id="tableClient">
 
     <tr>
         <th>Numero</th>
@@ -376,6 +411,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
         <?php } ?>
 
     </table>
+</div>
        
     </div>
 </div>

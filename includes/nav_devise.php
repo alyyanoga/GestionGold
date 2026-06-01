@@ -9,21 +9,21 @@
         <ul class="menu-top-navbar">
 
             <li>
-                <a href="../pages/_depot.php"  class="<?php if($page == '_depot') echo 'active'; ?>">
+                <a href="../pages/_achat_devise.php"  class="<?php if($page == '_achat_devise') echo 'active'; ?>">
 
                     <i class="bi bi-people-fill"></i>
 
-                    Depot
+                    Achat Devise
 
                 </a>
             </li>
 
             <li>
-                <a href="../pages/_retrait.php"  class="<?php if($page == '_retrait') echo 'active'; ?>">
+                <a href="../pages/_vente_devise.php"  class="<?php if($page == '_vente_devise') echo 'active'; ?>">
 
                     <i class="bi bi-wallet2"></i>
 
-                    Retrait
+                    Vente Devise
 
                 </a>
             </li>
@@ -37,15 +37,6 @@
 
                </a>
            </li>
-            <li>
-                <a href="_operations_clients.php" class="<?php if($page == '_operations_clients') echo 'active'; ?>">
-
-                    <i class="bi bi-bar-chart-line-fill"></i>
-
-                    Operations Clients
-
-                </a>
-            </li>
 
         </ul>
 

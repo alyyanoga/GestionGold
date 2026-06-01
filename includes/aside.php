@@ -13,7 +13,7 @@
 
         <ul class="menu">
              <li>
-                <a href="index.php">
+                <a href="main.php">
 
                     <i class="bi bi-house-door-fill"></i>
 
@@ -52,7 +52,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="_achat_devise.php">
 
                     <i class="bi bi-currency-exchange"></i>
 
@@ -62,15 +62,17 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="_operations_caisse.php">
 
-                    <i class="bi bi-arrows-angle-contract"></i>
+                    <i class="bi bi-bank"></i>
 
-                    Virement Inter-Clients
+                    Finances
 
                 </a>
             </li>
 
+           
+        <?php if($_SESSION['Role'] == 'Administrateur') { ?>
             <li>
                 <a href="inscription.php">
 
@@ -80,8 +82,8 @@
 
                 </a>
             </li>
-
-            <li>
+        <?php } ?>
+            <li class="btn_deconnexion ">
                 <a href="logout.php">
 
                     <i class="bi bi-box-arrow-right"></i>

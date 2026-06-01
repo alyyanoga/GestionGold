@@ -5,14 +5,14 @@ session_start();
  
 
 
-function ajout_user($Prenom, $Nom, $Identifiant, $Password){
+function ajout_user($Prenom, $Nom, $Identifiant, $Password,$Role){
 
 global $conn;
 
     $sql = "INSERT INTO Utilisateurs
-            (Prenom, Nom, Identifiant, Password)
+            (Prenom, Nom, Identifiant, Password, Role)
             VALUES
-            ('$Prenom', '$Nom','$Identifiant', '$Password')";
+            ('$Prenom', '$Nom','$Identifiant', '$Password', '$Role')";
 
     $result = mysqli_query($conn, $sql);
 
@@ -73,7 +73,7 @@ function dernier_numero_compte($conn)
         return $row['lastNum'] + 1;
     }
 
-    return 401000;
+    return 411000;
 }
 
 //------------------Dernier numero de regiment depot et retrait argent
@@ -325,7 +325,95 @@ function convertir_en_lettres($nombre)
     $f = new NumberFormatter("fr", NumberFormatter::SPELLOUT);
     return ucfirst($f->format($nombre));
 }
+
+
+//---------OPERATION VIREMENT INTER CLIENT--------------//
+
+function faire_retrait_virement(
+    $Date,
+    $Depot,
+    $Retrait,
+    $Transaction,
+    $Montant,
+    $Regiment
+){
+
+global $conn;
+
+$Heure = date("H:i:s");
+
+$sql = "INSERT INTO virement
+(
+    Date,
+    Depot,
+    Retrait,
+    Transaction,
+    Montant,
+    Regiment,
+    Heure
+)
+
+VALUES
+(
+    '$Date',
+    '$Depot',
+    '$Retrait',
+    '$Transaction',
+    '$Montant',
+    '$Regiment',
+    '$Heure'
+)";
+
+$result = mysqli_query($conn, $sql);
+
+return $result;
+}
+
+
+function faire_depot_virement(
+    $Date,
+    $Depot,
+    $Retrait,
+    $Transaction,
+    $Montant,
+    $Regiment
+){
+
+global $conn;
+
+$Heure = date("H:i:s");
+
+$sql = "INSERT INTO virement
+(
+    Date,
+    Depot,
+    Retrait,
+    Transaction,
+    Montant,
+    Regiment,
+    Heure
+)
+
+VALUES
+(
+    '$Date',
+    '$Depot',
+    '$Retrait',
+    '$Transaction',
+    '$Montant',
+    '$Regiment',
+    '$Heure'
+)";
+
+$result = mysqli_query($conn, $sql);
+
+return $result;
+}
+
+
 ?>
+
+
 
 
 

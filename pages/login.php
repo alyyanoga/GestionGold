@@ -30,7 +30,8 @@ if(isset($_POST['btn_connexion']))
         $_SESSION['Prenom'] = $user['Prenom'];
         $_SESSION['Nom'] = $user['Nom'];
         $_SESSION['Identifiant'] = $user['Identifiant'];
-        header("Location: index.php");
+        $_SESSION['Role'] = $user['Role'];
+        header("Location: main.php");
         exit();
     }
     else

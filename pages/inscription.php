@@ -8,6 +8,7 @@ $Prenom ="";
 $Nom="";
 $Identifiant="";
 $Password="";
+$Role = "Choisir";
 $btn = "AJOUTER";
 
 /*  FONCTIONS MODIFICATION  */
@@ -23,6 +24,7 @@ if (isset($_GET['edit'])) {
     $Nom = $row['Nom'];
     $Identifiant = $row['Identifiant'];
     $Password = $row['Password'];
+    $Role = $row['Role'];
 
     $btn = "MODIFIER";
 }
@@ -34,12 +36,14 @@ if (isset($_POST['btn_ajouter'])) {
     $Nom = $_POST['txtNom'];
     $Identifiant = $_POST['txtIdentifiant'];
     $Password = $_POST['txtPassword'];
+    $Role = $_POST['txtRole'];
 
     if (
     empty($Prenom) ||
     empty($Nom) ||
     empty($Identifiant) ||
-    empty($Password)
+    empty($Password) ||
+    empty($Role)
 ) {
 
     $message= "Veuillez remplir tous les champs";
@@ -50,7 +54,8 @@ else {
         $Prenom,
         $Nom,
         $Identifiant,
-        $Password
+        $Password,
+        $Role
     );
 }
 
@@ -74,9 +79,10 @@ if (isset($_POST['btn_modifier'])) {
     $Nom = $_POST['txtNom'];
     $Identifiant = $_POST['txtIdentifiant'];
     $Password = $_POST['txtPassword'];
+    $Role =  $_POST['txtRole'];
 
     mysqli_query($conn, "UPDATE Utilisateurs
-    SET Prenom='$Prenom', Nom='$Nom', Identifiant='$Identifiant', Password='$Password'
+    SET Prenom='$Prenom', Nom='$Nom', Identifiant='$Identifiant', Password='$Password', Role='$Role'
     WHERE id='$id'");
 
      echo "
@@ -120,7 +126,6 @@ $result = mysqli_query($conn, $sql);
         include "../includes/nav.php";
         ?>
         <div class="main">
-            
             <div class="sign_container">
                 <h2>AJOUT UTILISATEUR</h2>
                     
@@ -137,6 +142,11 @@ $result = mysqli_query($conn, $sql);
                         <label class="lbl">Mot de passe</label> 
                         <input type="text" class="Password" name="txtPassword" value="<?php echo $Password ?>"> 
 
+                        <select name="txtRole" value="<?php echo $Role ?>">
+                            <option value="Utilisateur">Utilisateur</option>
+                            <option value="Administrateur">Administrateur</option>
+                        </select>
+                        <br>
                         <input type="hidden" name="txtId" value="<?php echo $id ?>"><br>
 
                          <?php if($btn=="AJOUTER"){ ?>
@@ -158,6 +168,7 @@ $result = mysqli_query($conn, $sql);
                             <th>Nom</th>
                             <th>Identifiant</th>
                             <th>Mot de passe</th>
+                            <th>Role</th>
                             <th>Modifier</th>
                             <th>Supprimer</th>
                         </tr>
@@ -171,6 +182,7 @@ $result = mysqli_query($conn, $sql);
                                     <td><?php echo $row['Nom']; ?></td>
                                     <td><?php echo $row['Identifiant']; ?></td>
                                     <td><?php echo $row['Password']; ?></td>
+                                    <td><?php echo $row['Role']; ?></td>
                                     <td><a href="?edit=<?php echo $row['Id'] ?>" id="btn_modifier"><img src="../assets/icone/img_modifier.png" class="ico" alt="modifier" srcset=""></a></td>
                                      <td><a href="?delete=<?php echo $row['Id'] ?>" id="btn_supprimer" onclick="return confirm('Supprimer cette ligne ?')"><img src="../assets/icone/img_supprimer.png" class="ico" alt="Supprimer" srcset=""></a></td>
                                 </tr>

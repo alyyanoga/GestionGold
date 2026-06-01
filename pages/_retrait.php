@@ -97,7 +97,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Date,
             $Compte,
             $Client,
-            $R_client,
+            "RETRAIT / ". $R_client,
             $Prix,
             $Quantite,
             $Montant_depot,
@@ -115,7 +115,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
         $save = ajout_caisse(
             $Date,
-            $Client,
+            "RETRAIT / ". $Client,
             $Debit,
             $Credit,
             $nouveau_solde_caisse,
@@ -186,7 +186,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Date,
             $Compte,
             $Client,
-            $R_client,
+            "RETRAIT / ". $R_client,
             $Prix,
             $Quantite,
             $Montant_depot,
@@ -269,7 +269,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                     </div>
                   <div class="lbl-fiel">
                       <label class="lbl">Rep. Client:</label>
-                      <input type="text" class="repclient" value="<?php echo ($client_data['Prenom'] ?? '') . ' ' . ($client_data['Nom'] ?? ''). ' ' . ($client_data['Telephone'] ?? ''); ?>" name="txtRepClient" id="txtRepClient" readonly>
+                      <input type="text" class="repclient" value="<?php echo ($client_data['Prenom'] ?? '') . ' ' . ($client_data['Nom'] ?? ''). ' ' . ($client_data['Telephone'] ?? ''); ?>" name="txtRepClient" id="txtRepClient" >
                   </div>
                   <div class="btn-valider">
                     <button type="submit" name="btn_valider_retrait" class="btn_valider" id="btn_valider" readonly> RETRAIT</button>
@@ -283,6 +283,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             <table border="1" class="table-mouvement">
 
               <tr>
+                  <th>Voir</th>
                   <th>Date</th>
                   <th>Représentant Client</th>
                   <th>Prix</th>
@@ -299,6 +300,36 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                             <?php while($row = mysqli_fetch_assoc($result2)) { ?>
 
                                 <tr>
+                                             <td>
+                                 <?php
+                                        if($row['Transactions'] == 'DEPOT ARGENT')
+                                        {
+                                    ?>
+
+                                    <button
+                                    onclick="window.open('../pdf/facture_depot.php?Id=<?= $row['Id'] ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+
+                                    <?php
+                                        }
+                                        else if($row['Transactions'] == 'RETRAIT ARGENT')
+                                        {
+                                    ?>
+
+                                    <button
+                                    onclick="window.open('../pdf/facture_retrait.php?Id=<?= $row['Id'] ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+
+                                    <?php } ?>
+                                     </td>
                                     <td><?php echo date('d/m/Y', strtotime($row['Date'])); ?></td>
                                     <td><?php echo $row['R_client']; ?></td>
                                     <td><?php echo number_format($row['Prix'], 0, ',', ' '); ?></td>
@@ -317,7 +348,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                         <?php } else { ?>
 
                             <tr>
-                                <td colspan="4" >Aucun utilisateur</td>
+                                <td colspan="4" >Aucune Operation</td>
                             </tr>
 
                         <?php } ?>
@@ -338,8 +369,10 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
         </span>
 
         <h3>Liste des clients</h3>
-
-       <table border="1" class="table-client">
+         <input type="text" class="rechercheClient" id="rechercheClient" placeholder="Rechercher un client..." onkeyup="filtrerClient()">
+            <br>
+    <div class="table-responsive">
+       <table border="1" class="table-client" id="tableClient">
 
     <tr>
         <th>Numero</th>
@@ -374,6 +407,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
         <?php } ?>
 
     </table>
+</div>
        
     </div>
 </div>
