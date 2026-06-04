@@ -10,7 +10,7 @@
     $heure = date('H:i:s');
 
 
-    /* TOUJOURS charger les utilisateurs */
+    /* TOUJOURS charger les clients */
 
     $sql = "SELECT * FROM clients";
     $result = mysqli_query($conn, $sql);
@@ -70,6 +70,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
     $Nature = "DEPOT ARGENT";
     $Transactions = $Nature;
     $Utilisateur = ($_SESSION['Prenom'] ?? '') . " " . ($_SESSION['Nom'] ?? '');
+    $Nom_R_client = $_POST['txtRepClient'] ?? '';
     /*------RECUPERER L'ANCIEN SOLDE DE LA CAISSE-------*/
     $Ancien_solde_caisse  = (int) str_replace(' ', '', $_POST['txtSoldeCaisse']);
 
@@ -110,7 +111,8 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Regiment,
             $Id_client,
             $Utilisateur,
-            $Nature
+            $Nature,
+            $Nom_R_client
         );
 
         $idDepot = mysqli_insert_id($conn);
@@ -168,6 +170,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
     $Nature = "DEPOT ARGENT";
     $Transactions = $Nature;
     $Utilisateur = ($_SESSION['Prenom'] ?? '') . " " . ($_SESSION['Nom'] ?? '');
+    $Nom_R_client = $_POST['txtRepClient'] ?? '';
     /*------RECUPERER L'ANCIEN SOLDE DE LA CAISSE-------*/
     $Ancien_solde_caisse  = (int) str_replace(' ', '', $_POST['txtSoldeCaisse']);
 
@@ -201,7 +204,8 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Regiment,
             $Id_client,
             $Utilisateur,
-            $Nature
+            $Nature,
+            $Nom_R_client
         );
          $idDepot = mysqli_insert_id($conn);
          $save = ajout_regiments($Regiment);
@@ -287,8 +291,8 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                   <th style="text-align: left;">Voir</th>
                   <th style="text-align: left;">Date</th>
                   <th style="text-align: left;">Représentant Client</th>
-                  <th style="text-align: left;">Prix</th>
                   <th style="text-align: left;">Quantité</th>
+                  <th style="text-align: left;">Prix</th>
                   <th style="text-align: left;">Montant dépot</th>
                   <th style="text-align: left;">Montant retrait</th>
                   <th style="text-align: left;">Solde disponible</th>
@@ -329,13 +333,39 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
                                     </button>
 
+                                    <?php
+                                        }
+                                        else if($row['Transactions'] == 'ACHAT DEVISE')
+                                        {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/facture_achat_devise.php?Id=<?= $row['Id'] ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+                                    <?php
+                                        }
+                                        else if($row['Transactions'] == 'VENTE DEVISE')
+                                        {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/facture_vente_devise.php?Id=<?= $row['Id'] ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+                                    
+
                                     <?php } ?>
                                      </td>
 
                                     <td style="text-align: left;"><?php echo date('d/m/Y', strtotime($row['Date'])); ?></td>
                                     <td style="text-align: left;"><?php echo $row['R_client']; ?></td>
-                                    <td style="text-align: left;"><?php echo number_format($row['Prix'], 0, ',', ' '); ?></td>
                                     <td style="text-align: left;"><?php echo number_format($row['Quantite'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Prix'], 0, ',', ' '); ?></td>
                                     <td style="text-align: left;"><?php echo number_format($row['Montant_depot'], 0, ',', ' '); ?></td>
                                     <td style="text-align: left;"><?php echo number_format($row['Montant_retrait'], 0, ',', ' '); ?></td>
                                     <td style="text-align: left;"><?php echo number_format($row['Solde'], 0, ',', ' '); ?></td>

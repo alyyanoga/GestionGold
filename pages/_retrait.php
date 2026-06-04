@@ -69,6 +69,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
     $Nature = "RETRAIT ARGENT";
     $Transactions = $Nature;
     $Utilisateur = ($_SESSION['Prenom'] ?? '') . " " . ($_SESSION['Nom'] ?? '');
+    $Nom_R_client = $_POST['txtRepClient'] ?? '';
     /*------RECUPERER L'ANCIEN SOLDE DE LA CAISSE-------*/
     $Ancien_solde_caisse  = (int) str_replace(' ', '', $_POST['txtSoldeCaisse']);
     /*----INSERTION DANS LA TABLE MOUVEMENT CAISE------*/
@@ -107,7 +108,8 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Regiment,
             $Id_client,
             $Utilisateur,
-            $Nature
+            $Nature,
+            $Nom_R_client
         );
         $idRetrait = mysqli_insert_id($conn);
 
@@ -159,6 +161,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
     $Nature = "RETRAIT ARGENT";
     $Transactions = $Nature;
     $Utilisateur = ($_SESSION['Prenom'] ?? '') . " " . ($_SESSION['Nom'] ?? '');
+    $Nom_R_client = $_POST['txtRepClient'] ?? '';
     /*------RECUPERER L'ANCIEN SOLDE DE LA CAISSE-------*/
     $Ancien_solde_caisse  = (int) str_replace(' ', '', $_POST['txtSoldeCaisse']);
     /*----INSERTION DANS LA TABLE MOUVEMENT CAISE------*/
@@ -196,7 +199,8 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Regiment,
             $Id_client,
             $Utilisateur,
-            $Nature
+            $Nature,
+            $Nom_R_client
         );
         $idRetrait = mysqli_insert_id($conn);
 
@@ -322,6 +326,30 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
                                     <button
                                     onclick="window.open('../pdf/facture_retrait.php?Id=<?= $row['Id'] ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+                                   <?php
+                                        }
+                                        else if($row['Transactions'] == 'ACHAT DEVISE')
+                                        {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/facture_achat_devise.php?Id=<?= $row['Id'] ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+                                    <?php
+                                        }
+                                        else if($row['Transactions'] == 'VENTE DEVISE')
+                                        {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/facture_vente_devise.php?Id=<?= $row['Id'] ?>')"
                                     class="btn-print">
 
                                     <i class="bi bi-printer"></i>

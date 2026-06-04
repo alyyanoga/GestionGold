@@ -7,7 +7,7 @@
             <i class="bi bi-person-circle"></i>
             <?php
   
-             echo $_SESSION['Prenom'] . " " . $_SESSION['Nom'];
+             echo $_SESSION ['Prenom'] . " " . $_SESSION['Nom'];
             ?>
         </div>
 
@@ -52,7 +52,7 @@
             </li>
 
             <li>
-                <a href="_achat_devise.php">
+                <a href="_a_devise.php">
 
                     <i class="bi bi-currency-exchange"></i>
 

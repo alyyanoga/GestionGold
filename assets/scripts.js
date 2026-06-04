@@ -114,6 +114,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+//----------SEPARATEUR DE MILLIER A LA SAISIE DE MONTANT USD
+document.addEventListener('DOMContentLoaded', function () {
+
+    const input = document.getElementById('txtMontantUSD');
+
+    input.addEventListener('input', function () {
+
+        // garder uniquement les chiffres
+        let valeur = this.value.replace(/[^\d]/g, '');
+
+        if (valeur === '') {
+            this.value = '';
+            return;
+        }
+
+        // éviter Number() direct (cause perte sur gros nombres parfois)
+        this.value = valeur.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    });
+
+});
+
+
+
+
+
+
 
 /*------SELECTION CAISSE */
 
@@ -177,6 +203,76 @@ function filtrerClient() {
         }
     }
 }
-          
 
- 
+
+// SELECTION CLIENT DEVISE
+function selectionnerClientDevise(Compte,Nom, IdClient, Solde){
+
+  document.getElementById("txtCompte").value = Compte;
+  document.getElementById("txtNomComplet").value = Nom;
+  document.getElementById("txtRepClient").value = Nom;
+  document.getElementById("txtIdClient").value = IdClient;
+
+   window.location.href = window.location.pathname + "?txtIdClient=" + IdClient;
+
+   document.getElementById("modalClient").style.display = "none";
+}
+
+//CALCULER LE MONTANT CFA
+function calculerDHS() {
+
+    let montantUSD = document.getElementById("txtMontantUSD").value;
+
+    // Supprimer les espaces des milliers
+    montantUSD = montantUSD.replace(/\s/g, '');
+
+    montantUSD = parseFloat(montantUSD) || 0;
+
+    let tauxDHS = 3.67;
+
+    let montantDHS = (montantUSD * tauxDHS).toFixed(2);
+
+    document.getElementById("txtMontantDHS").value =
+        montantDHS.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+//CALCULER LE MONTANT CFA
+function calculerCFA() {
+
+    let montantUSD = document.getElementById("txtMontantUSD").value.replace(/\s/g, '');
+    let tauxCFA = document.getElementById("txtTaux").value.replace(/\s/g, '');
+
+    montantUSD = parseFloat(montantUSD) || 0;
+    tauxCFA = parseFloat(tauxCFA) || 0;
+
+    let montant = (montantUSD * tauxCFA).toFixed(2);
+
+    document.getElementById("txtMontantCFA").value =
+        montant.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+
+// POUR AFFICHER LA LISTE CLIENT DEVISE EN RESPONSIVE
+function AfficheModal(){
+    document.getElementById("modalClient").style.display = "block";
+}
+
+function filtrerClientDevise() {
+
+    let filtre = document
+        .getElementById("rechercheClientDevise")
+        .value
+        .toLowerCase();
+
+    let lignes = document.querySelectorAll("#tableClientDevise tr");
+
+    lignes.forEach((ligne, index) => {
+
+        if (index === 0) return; // ignorer l'en-tête
+
+        let texte = ligne.textContent.toLowerCase();
+
+        ligne.style.display =
+            texte.includes(filtre) ? "" : "none";
+    });
+}

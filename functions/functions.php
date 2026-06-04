@@ -107,7 +107,8 @@ function faire_depot(
     $Regiment,
     $Id_client,
     $Utilisateur,
-    $Nature
+    $Nature,
+    $Nom_R_client
 ){
 
 global $conn;
@@ -130,7 +131,8 @@ $sql = "INSERT INTO mouvement_totales
     Id_client,
     Utilisateur,
     Nature,
-    Heure
+    Heure,
+    Nom_R_client
 )
 
 VALUES
@@ -149,7 +151,8 @@ VALUES
     '$Id_client',
     '$Utilisateur',
     '$Nature',
-    '$Heure'
+    '$Heure',
+    '$Nom_R_client'
 )";
 
 $result = mysqli_query($conn, $sql);
@@ -173,7 +176,8 @@ function faire_retrait(
     $Regiment,
     $Id_client,
     $Utilisateur,
-    $Nature
+    $Nature,
+    $Nom_R_client
 ){
 
 global $conn;
@@ -196,7 +200,8 @@ $sql = "INSERT INTO mouvement_totales
     Id_client,
     Utilisateur,
     Nature,
-    Heure
+    Heure,
+    Nom_R_client
 )
 
 VALUES
@@ -215,7 +220,8 @@ VALUES
     '$Id_client',
     '$Utilisateur',
     '$Nature',
-    '$Heure'
+    '$Heure',
+    '$Nom_R_client'
 )";
 
 $result = mysqli_query($conn, $sql);

@@ -94,14 +94,7 @@ if (isset($_POST['btn_ajouter_virement'])) {
             VALIDATIONS
         ==========================*/
 
-        //if (
-          //  empty($IdDebiteur) ||
-           // empty($IdCrediteur) 
-            //empty($Montant)
-        //) {
-
-         //   throw new Exception("Veuillez remplir tous les champs");
-       // }
+       
 
         if ($IdDebiteur == $IdCrediteur) {
 
@@ -109,6 +102,12 @@ if (isset($_POST['btn_ajouter_virement'])) {
         }
 
 
+        if (trim($Montant) === '' ||
+            $Montant <= 0) {
+
+            throw new Exception("Veuillez saisir le montant !!");
+        }
+      
 
         /*=========================
             NOUVEAUX SOLDES
@@ -245,6 +244,7 @@ if (isset($_POST['btn_ajouter_virement'])) {
 
         </script>
         ";
+    
 
     } catch (Exception $e) {
 
@@ -258,6 +258,8 @@ if (isset($_POST['btn_ajouter_virement'])) {
         </script>
         ";
     }
+    
+    
 }
 
 

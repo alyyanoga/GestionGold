@@ -8,7 +8,6 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #0d0d0d;
 }
 
 .main {
@@ -681,11 +680,11 @@ td:nth-child(6) {
 }
 .table-mouvement th:nth-child(2),
 .table-mouvement td:nth-child(2) {
-  width: 5%;
+  width: 1%;
 }
 .table-mouvement th:nth-child(3),
 .table-mouvement td:nth-child(3) {
-  width: 15%;
+  width: 20%;
 }
 .table-mouvement th:nth-child(4),
 .table-mouvement td:nth-child(4) {
@@ -697,11 +696,11 @@ td:nth-child(6) {
 }
 .table-mouvement th:nth-child(6),
 .table-mouvement td:nth-child(6) {
-  width: 7.2%;
+  width: 7%;
 }
 .table-mouvement th:nth-child(7),
 .table-mouvement td:nth-child(7) {
-  width: 7.2%;
+  width: 7%;
 }
 .table-mouvement th:nth-child(8),
 .table-mouvement td:nth-child(8) {
@@ -959,15 +958,117 @@ td:nth-child(6) {
 }
 
 /*------------DEVISES-------------------*/
-
-.container_devise {
-  margin-left: 20.5%;
-  margin-top: -5.2%;
+.btn_choisir_devise {
+  width: 120px;
+  border-radius: 4px;
+  background: #4400ff;
+  padding: 10px 5px;
+  font-weight: bold;
+}
+/* MODAL */
+.rechercheClient {
+  width: 50%;
+}
+.modal-devise {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
 }
 
-.container_devise .header {
-  margin-left: 5%;
-  margin-top: 20%;
+.modal-content-devise {
+  background: rgb(250, 250, 250);
+  width: 60%;
+  max-width: 40%;
+  margin: 80px 40%;
+  padding: 20px;
+  border-radius: 10px;
+  height: 400px;
+}
+.table-responsive-devise {
+  overflow: auto;
+  height: 40vh;
+  width: 100%;
+}
+.table-responsive-devise .table-client {
+  background: #ffffff;
+  min-width: 120%;
+}
+.table-responsive-devise .table-client tr:hover {
+  background-color: #fff3cd;
+  cursor: pointer;
+}
+.table-responsive-devise .table-client th:nth-child(1),
+.table-responsive-devise .table-client td:nth-child(1) {
+  width: 60%;
+}
+.table-responsive-devise .table-client th:nth-child(2),
+.table-responsive-devise .table-client td:nth-child(2) {
+  width: 30%;
+}
+
+.field_groupe {
+  width: 50%;
+  height: 87vh;
+  border: 1px solid #000;
+  background: rgb(180, 178, 178);
+  border-radius: 10px;
+  margin-left: 35%;
+  margin-top: 5%;
+  padding: 5px 50px;
+}
+.input_field_groupe1 {
+  width: 100%;
+  display: flex;
+  padding: 5px 5px;
+  gap: 45px;
+}
+.input_field_groupe1 .lbl-fiel input {
+  width: 150px;
+  height: 30px;
+}
+.input_field_groupe1 .lbl-fiel .txtDateDevise {
+  width: 110px;
+}
+.input_field_groupe2 .lbl-fiel {
+  padding: 12px 5px;
+}
+.input_field_groupe2 .lbl-fiel .nomcomplet,
+.repClient {
+  width: 65%;
+  height: 30px;
+}
+.input_field_groupe2 .lbl-fiel .compte,
+.montantUSD,
+.tauxdevise,
+.montantCFA,
+.montantDHS {
+  width: 43%;
+  height: 30px;
+}
+.rgmtDevise {
+  width: 100px;
+}
+.rgmtDevise,
+.montantDHS,
+.nomcomplet,
+.compte,
+.montant:hover {
+  cursor: default;
+}
+.lbl {
+  font-weight: bold;
+}
+.btn-valider-devise {
+  height: 0;
+  margin-left: 120px;
+}
+.btn-valider-devise .btn_valider {
+  width: 245px;
+  font-weight: bold;
 }
 
 /*-----RESPONSIVE PETIT PC ET TABLETTE***/
@@ -1286,5 +1387,76 @@ td:nth-child(6) {
   h3,
   h5 {
     font-size: 16px;
+  }
+
+  /*----DEVISE----*/
+  .field_groupe {
+    width: 95%;
+    margin: 65px auto;
+    padding: 10px;
+    height: auto;
+  }
+
+  .input_field_groupe1 {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .input_field_groupe1 .lbl-fiel,
+  .input_field_groupe2 .lbl-fiel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .input_field_groupe1 .lbl-fiel input,
+  .input_field_groupe2 .lbl-fiel input {
+    width: 100%;
+  }
+
+  .input_field_groupe2 .lbl-fiel .nomcomplet,
+  .input_field_groupe2 .lbl-fiel .repClient,
+  .input_field_groupe2 .lbl-fiel .compte,
+  .input_field_groupe2 .lbl-fiel .montantUSD,
+  .input_field_groupe2 .lbl-fiel .tauxdevise,
+  .input_field_groupe2 .lbl-fiel .montantCFA,
+  .input_field_groupe2 .lbl-fiel .montantDHS {
+    width: 100%;
+  }
+
+  .btn-valider-devise {
+    margin: 20px 0;
+    height: auto;
+  }
+
+  .btn-valider-devise .btn_valider {
+    width: 100%;
+  }
+
+  /* Modal */
+  .modal-content-devise {
+    width: 95%;
+    max-width: none;
+    margin: 20px auto;
+    height: 80vh;
+    overflow-y: auto;
+  }
+
+  .rechercheClient {
+    width: 100%;
+  }
+
+  .table-responsive-devise {
+    width: 100%;
+    height: 50vh;
+  }
+
+  .table-responsive-devise .table-client {
+    min-width: 600px;
+  }
+
+  .btn_choisir_devise {
+    width: 100%;
   }
 }

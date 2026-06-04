@@ -9,7 +9,7 @@
         <ul class="menu-top-navbar">
 
             <li>
-                <a href="../pages/_achat_devise.php"  class="<?php if($page == '_achat_devise') echo 'active'; ?>">
+                <a href="../pages/_a_devise.php"  class="<?php if($page == '_achat_devise') echo 'active'; ?>">
 
                     <i class="bi bi-people-fill"></i>
 
@@ -19,7 +19,7 @@
             </li>
 
             <li>
-                <a href="../pages/_vente_devise.php"  class="<?php if($page == '_vente_devise') echo 'active'; ?>">
+                <a href="../pages/_v_devise.php"  class="<?php if($page == '_vente_devise') echo 'active'; ?>">
 
                     <i class="bi bi-wallet2"></i>
 

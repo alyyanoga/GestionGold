@@ -183,8 +183,8 @@
                   <th>Client</th>
                   <th>Debit</th>
                   <th>Credit</th>
-                  <th>Transactions</th>
                   <th>Solde disponible</th>
+                  <th>Transactions</th>
                   <th>Utilisateur</th>
                   
               </tr>
@@ -196,8 +196,8 @@
                                     <td><?php echo $row['Client']; ?></td>
                                     <td><?php echo number_format($row['Debit'], 0, ',', ' '); ?></td>
                                     <td><?php echo number_format($row['Credit'], 0, ',', ' '); ?></td>
-                                    <td><?php echo $row['Transaction']; ?></td>
                                     <td><?php echo number_format($row['Solde'], 0, ',', ' '); ?></td>
+                                    <td><?php echo $row['Transaction']; ?></td>
                                     <td><?php echo $row['Utilisateur']; ?></td>
                                     
                                 </tr>
