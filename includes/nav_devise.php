@@ -29,11 +29,11 @@
             </li>
 
             <li>
-               <a href="../pages/_virement_clients.php" class="<?php if($page == '_virement_clients') echo 'active'; ?>">
+               <a href="../pages/_proforma_devise.php" class="<?php if($page == '_proforma_devise') echo 'active'; ?>">
 
                    <i class="bi bi-bar-chart-line-fill"></i>
 
-                   Virement Entre Clients
+                   Proforma
 
                </a>
            </li>

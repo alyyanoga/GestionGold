@@ -96,7 +96,7 @@ if (isset($_POST['btn_valider_devise'])) {
             echo "
             <script>
             window.location='_v_devise.php';
-            window.open('../pdf/facture_vente_devise.php?Id=$idVente');
+            window.open('../pdf/facture_v_devise.php?Id=$idVente');
             </script>
             ";
         

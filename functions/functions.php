@@ -90,6 +90,20 @@ function dernier_numero_regiment($conn)
 
   return $row['lastNum'] + 1;
 }
+// DERNIER NUMERO DE REGIMENT PROFORMA DEVISE
+function dernier_numero_regiment_proforma($conn)
+{
+    $sql = "SELECT MAX(Numero) AS lastNum FROM regiment_devise_proforma";
+    $result = mysqli_query($conn, $sql);
+
+    $row = mysqli_fetch_assoc($result);
+
+    if ($row['lastNum']) {
+        return $row['lastNum'] + 1;
+    }
+
+  return $row['lastNum'] + 1;
+}
 
 //----------AJOUTER OPERATIONS DEPOT------------
 
@@ -229,6 +243,75 @@ $result = mysqli_query($conn, $sql);
 return $result;
 }
 
+//----------AJOUTER OPERATIONS DEVISE FACTURE PROFORMA------------
+
+function ajout_proforma(
+    $Date,
+    $Compte,
+    $Client,
+    $R_client,
+    $Prix,
+    $Quantite,
+    $Montant_depot,
+    $Montant_retrait,
+    $Ancien_solde ,
+    $Transactions,
+    $Regiment,
+    $Id_client,
+    $Utilisateur,
+    $Nature,
+    $Nom_R_client
+){
+
+global $conn;
+
+$Heure = date("H:i:s");
+
+$sql = "INSERT INTO devise_proforma
+(
+    Date,
+    Compte,
+    Client,
+    R_client,
+    Prix,
+    Quantite,
+    Montant_depot,
+    Montant_retrait,
+    Solde,
+    Transactions,
+    Regiment,
+    Id_client,
+    Utilisateur,
+    Nature,
+    Heure,
+    Nom_R_client
+)
+
+VALUES
+(
+    '$Date',
+    '$Compte',
+    '$Client',
+    '$R_client',
+    '$Prix',
+    '$Quantite',
+    '$Montant_depot',
+    '$Montant_retrait',
+    '$Ancien_solde',
+    '$Transactions',
+    '$Regiment',
+    '$Id_client',
+    '$Utilisateur',
+    '$Nature',
+    '$Heure',
+    '$Nom_R_client'
+)";
+
+$result = mysqli_query($conn, $sql);
+
+return $result;
+}
+
 
 //--------INSERTION DANS LA TABLE REGIMENTS
 
@@ -245,6 +328,28 @@ $sql = "INSERT INTO regiments
     Numero
 )
 
+VALUES
+(
+    '$Numero'
+    
+)";
+
+$result = mysqli_query($conn, $sql);
+
+return $result;
+}
+
+//INSERER REGIMENT FACTURE PROFORMA 
+
+function devise_proforma_regiment(
+    $Numero,
+){
+global $conn;
+
+$sql = "INSERT INTO regiment_devise_proforma
+(
+    Numero
+)
 VALUES
 (
     '$Numero'

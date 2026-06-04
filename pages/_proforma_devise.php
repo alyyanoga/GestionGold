@@ -3,7 +3,7 @@ include "../includes/header.php";
 include(__DIR__ . "/../functions/functions.php");
 
     /*---INITIALISATION----*/
-    $Regiment= dernier_numero_regiment($conn);
+    $Regiment= dernier_numero_regiment_proforma($conn);
     date_default_timezone_set('Africa/Bamako');
     $heure = date('H:i:s');
 
@@ -25,7 +25,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 }
 
      /* INSERER L'ACHAT DEVISE DANS LE COMPTE CLIENT */
-if (isset($_POST['btn_valider_devise'])) {
+if (isset($_POST['btn_voir_facture'])) {
 
     $Date = $_POST['txtDate'] ?? '';
     $Compte = $_POST['txtCompte'] ?? '';
@@ -62,17 +62,12 @@ if (isset($_POST['btn_valider_devise'])) {
         ";
 
     } else {
-        $nouveau_solde = $Ancien_solde + $Montant_depot;
-        $nouveau_solde_caisse = $Ancien_solde_caisse + $Montant_depot;
-
-        $save = modifier_solde_client($Id_client, $nouveau_solde);
-        $save_caisse = modifier_solde_caisse($nouveau_solde_caisse);
-
-        $save = faire_depot(
+      
+        $save = ajout_proforma(
             $Date,
             $Compte,
             $Client,
-            "ACHAT $$$ / ". $R_client,
+            $R_client,
             $Prix,
             $Quantite,
             $Montant_depot,
@@ -85,7 +80,7 @@ if (isset($_POST['btn_valider_devise'])) {
             $Nature,
             $Nom_R_client
         );
-        $save = ajout_regiments($Regiment);
+        $save = devise_proforma_regiment($Regiment);
         $idAchat = mysqli_insert_id($conn);
 
          if ($save) {
@@ -93,13 +88,13 @@ if (isset($_POST['btn_valider_devise'])) {
          
             echo "
             <script>
-            window.location='_a_devise.php';
-            window.open('../pdf/facture_a_devise.php?Id=$idAchat');
+            window.location='_proforma_devise.php';
+            window.open('../pdf/facture_proforma_devise.php?Id=$idAchat');
             
             </script>
             ";
         
-            $Regiment = dernier_numero_regiment($conn);
+            $Regiment = dernier_numero_regiment_proforma($conn);
 
         } else {
 
@@ -114,7 +109,7 @@ if (isset($_POST['btn_valider_devise'])) {
 
  <?php
         include "../includes/aside.php";
-        $page = "_achat_devise";
+        $page = "_proforma_devise";
         include "../includes/nav_devise.php";
         ?>
 
@@ -210,7 +205,7 @@ if (isset($_POST['btn_valider_devise'])) {
                                 </div>
                                 
                                 <div class="btn-valider-devise">
-                                    <button type="submit"  class="btn_valider" name="btn_valider_devise" id="btn_valider_devise" readonly> EFFECTUER ACHAT</button>
+                                    <button type="submit"  class="btn_valider" name="btn_voir_facture" id="btn_valider_devise" readonly> VOIR FACTURE</button>
                                 </div>
 
                             </div>
