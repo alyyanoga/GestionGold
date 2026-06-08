@@ -100,16 +100,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     input.addEventListener('input', function () {
 
-        // garder uniquement les chiffres
-        let valeur = this.value.replace(/[^\d]/g, '');
+        let valeur = this.value;
+
+        let negatif = valeur.startsWith('-');
+
+        // Garder uniquement les chiffres
+        valeur = valeur.replace(/[^\d]/g, '');
 
         if (valeur === '') {
-            this.value = '';
+            this.value = negatif ? '-' : '';
             return;
         }
 
-        // éviter Number() direct (cause perte sur gros nombres parfois)
-        this.value = valeur.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        // Ajouter les séparateurs de milliers
+        valeur = valeur.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+        this.value = negatif ? '-' + valeur : valeur;
     });
 
 });
@@ -121,16 +127,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     input.addEventListener('input', function () {
 
-        // garder uniquement les chiffres
-        let valeur = this.value.replace(/[^\d]/g, '');
+        let valeur = this.value;
+
+        let negatif = valeur.startsWith('-');
+
+        // Garder uniquement les chiffres
+        valeur = valeur.replace(/[^\d]/g, '');
 
         if (valeur === '') {
-            this.value = '';
+            this.value = negatif ? '-' : '';
             return;
         }
 
-        // éviter Number() direct (cause perte sur gros nombres parfois)
-        this.value = valeur.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        // Ajouter les séparateurs de milliers
+        valeur = valeur.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+        this.value = negatif ? '-' + valeur : valeur;
     });
 
 });
@@ -276,3 +288,7 @@ function filtrerClientDevise() {
             texte.includes(filtre) ? "" : "none";
     });
 }
+///Autoriser la saisie de la signe -
+document.querySelector('.montant').addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9-]/g, '');
+});

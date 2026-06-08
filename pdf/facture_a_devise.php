@@ -5,7 +5,7 @@ include(__DIR__ . "/../functions/functions.php");
 
 $id = $_GET['Id'];
 
-$sql = "SELECT * FROM mouvement_totales WHERE Id = '$id'";
+$sql = "SELECT * FROM mouvement_totales WHERE Regiment = '$id'";
 $result = mysqli_query($conn, $sql);
 
 $data = mysqli_fetch_assoc($result);
@@ -57,7 +57,7 @@ $pdf->Cell(0,9,$data['Transactions'],0,1);
 $pdf->SetFont('Arial','B',11);
 $pdf->Cell(20,3,'Montant $$$ : ',0,0);
 $pdf->SetX(35);
-$pdf->Cell(0,3, number_format($data['Quantite'],0,' ',' '),0,1);
+$pdf->Cell(0,3, number_format($data['Quantite'],0,' ',' '). ' $',0,1);
 $pdf->SetX(80);
 $pdf->SetFont('Arial','B',11);
 $pdf->Cell(0,-3,'Taux : ',0,0);
@@ -127,7 +127,7 @@ $pdf->Cell(35,6,'Type Operation : ',0,0);
 $pdf->Cell(0,6,$data['Transactions'],0,1);
 
 $pdf->Cell(25,8,'Montant $$$ : ',0,0);
-$pdf->Cell(0,8, number_format($data['Quantite'],0,' ',' '),0,1);
+$pdf->Cell(0,8, number_format($data['Quantite'],0,' ',' '). ' $',0,1);
 
 $pdf->SetX(80);
 $pdf->Cell(15,-10,'Taux : ',0,0);

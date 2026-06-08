@@ -161,10 +161,10 @@ td:nth-child(6) {
 /*---CONNEXION----*/
 .login-container {
   display: flex;
-  margin-top: 100px;
-  margin-left: 200px;
-  width: 800px;
-  height: 450px;
+  margin-top: 80px;
+  margin-left: 150px;
+  width: 950px;
+  height: 500px;
   background: #1a1a1a;
   border: 2px solid #00f2ff;
   box-shadow:
@@ -173,101 +173,148 @@ td:nth-child(6) {
   border-radius: 8px;
   overflow: hidden;
 }
+
 .form-login {
   flex: 1.2;
-  width: 288px;
-  padding-left: 20px;
+  width: 350px;
+  padding-left: 30px;
+
   color: white;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .message-erreur {
   padding: 0;
   margin: 0;
   color: #ff0000;
+
   display: inline-block;
+
   transform: translateX(30px);
   opacity: 0;
+
   animation: slideError 0.4s forwards;
 }
+
 @keyframes slideError {
   from {
     transform: translateX(50px);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
   }
 }
+
 .title {
-  font-size: 2.5rem;
-  margin-bottom: 30px;
+  font-size: 2.8rem;
+  margin-bottom: 35px;
   text-align: center;
-  width: 288px;
+  width: 350px;
 }
+
 .input-grup {
   position: relative;
-  margin-bottom: 20px;
-  width: 100px;
+  margin-bottom: 25px;
+  width: 350px;
 }
+
+.input-grup i {
+  color: white;
+  font-size: 20px;
+}
+
 .input-field {
-  width: 288px;
+  width: 350px;
+
   background: transparent;
   border: none;
   border-bottom: 1px solid white;
+
   color: white;
-  padding: 8px 0;
-  outline: none;
-  font-size: 18px;
-}
-.submit {
-  width: 288px;
+
   padding: 10px 0;
+
+  outline: none;
+  font-size: 20px;
+}
+
+.input-field::placeholder {
+  color: #dcdcdc;
+}
+
+.submit {
+  width: 350px;
+
+  padding: 12px 0;
+
   background: linear-gradient(45deg, #0ef, #c800ff);
+
   border: none;
   outline: none;
   border-radius: 40px;
+
   color: white;
   font-weight: bold;
+
   cursor: pointer;
-  margin-top: 10px;
+
+  margin-top: 15px;
+
   font-size: 20px;
   letter-spacing: 1px;
 }
+
+.submit:hover {
+  opacity: 0.9;
+}
+
 .banner {
   position: absolute;
-  top: 100px;
-  right: 285px;
-  width: 450px;
-  height: 450px;
+
+  top: 80px;
+  right: 170px;
+
+  width: 550px;
+  height: 500px;
+
   background: linear-gradient(to right, #0ef, #c800ff);
+
   clip-path: polygon(0 0, 100% 0, 100% 100%, 60% 100%);
-  padding-right: 70px;
+
+  padding-right: 80px;
+
   text-align: center;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
+
   border-top-right-radius: 8px;
 }
+
 .banner:hover {
   background: linear-gradient(to right, #c800ff, #0ef);
 }
+
 .banner img {
-  width: 100px;
-  margin-top: -50px;
-  margin-right: 50px;
-  color: white;
+  width: 130px;
+  margin-top: -40px;
+  margin-right: 60px;
 }
+
 .text {
-  font-size: 25px;
+  font-size: 32px;
   color: white;
   text-align: center;
   font-weight: bold;
 }
-
 /* SIDEBAR */
 /* bouton menu */
 .btn-toggle {
@@ -722,7 +769,7 @@ td:nth-child(6) {
 /* CELLULES CAISSE */
 .container-caisse {
   margin-left: 20%;
-  margin-top: 2%;
+  margin-top: 5%;
 }
 .motif {
   height: 25px;
@@ -792,6 +839,12 @@ td:nth-child(6) {
 }
 .container_virement .main {
   width: 90%;
+}
+
+.bi-plus-circle {
+  color: green;
+  font-weight: bold;
+  font-size: 20px;
 }
 .slide-table-virement {
   flex: 1;
@@ -1457,6 +1510,87 @@ td:nth-child(6) {
   }
 
   .btn_choisir_devise {
+    width: 100%;
+  }
+}
+
+/* Ordinateurs portables 1280px */
+@media screen and (max-width: 1280px) {
+  .login-container {
+    width: 800px;
+    margin-left: 50px;
+  }
+
+  .banner {
+    width: 450px;
+    right: 50px;
+  }
+}
+
+/* Petits portables 1024px */
+@media screen and (max-width: 1024px) {
+  .login-container {
+    width: 700px;
+    height: 400px;
+    margin-left: 20px;
+  }
+
+  .banner {
+    width: 380px;
+    height: 400px;
+    right: 30px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .title,
+  .input-field,
+  .submit {
+    width: 250px;
+  }
+
+  .input-grup {
+    width: 250px;
+  }
+
+  .banner img {
+    width: 100px;
+  }
+
+  .text {
+    font-size: 24px;
+  }
+}
+
+/* Tablettes */
+@media screen and (max-width: 768px) {
+  .login-container {
+    width: 95%;
+    height: auto;
+    margin: 20px auto;
+    flex-direction: column;
+  }
+
+  .form-login {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .banner {
+    position: static;
+    width: 100%;
+    height: 220px;
+    clip-path: none;
+    padding-right: 0;
+    align-items: center;
+  }
+
+  .title,
+  .input-field,
+  .submit,
+  .input-grup {
     width: 100%;
   }
 }

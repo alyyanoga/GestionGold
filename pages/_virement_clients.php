@@ -136,7 +136,7 @@ if (isset($_POST['btn_ajouter_virement'])) {
         /*=========================
             HISTORIQUE RETRAIT
         ==========================*/
-
+         
         faire_retrait(
 
             $Date,
@@ -165,13 +165,14 @@ if (isset($_POST['btn_ajouter_virement'])) {
 
             $Utilisateur,
 
-            "VIREMENT RETRAIT ARGENT"
+            "VIREMENT RETRAIT ARGENT",
+            $Crediteur
         );
 
         /*=========================
             HISTORIQUE DEPOT
         ==========================*/
-
+        
         faire_depot(
 
             $Date,
@@ -200,7 +201,8 @@ if (isset($_POST['btn_ajouter_virement'])) {
 
             $Utilisateur,
 
-            "VIREMENT DEPOT ARGENT"
+            "VIREMENT DEPOT ARGENT",
+            $Debiteur
         );
 
         faire_retrait_virement(
@@ -296,7 +298,7 @@ if (isset($_POST['btn_ajouter_virement'])) {
                             <input type="hidden" name="txtIdClientDebiteur" id="txtIdClientDebiteur" >
                             <input type="hidden" name="txtSoldeDebiteur" id="txtSoldeDebiteur" value="<?php echo $client_data['Solde'] ?? ''; ?>">
                             <input type="hidden" name="txtSoldeCaisse" id="txtSoldeCaisse" value="<?php echo $caisse_data['Solde'] ?? ''; ?>">
-                            <button type="button" class="btn_choisir" name="btn_choisir_debiteur" onclick="ouvrirModal('debiteur')"><i class="bi bi-plus-circle"></i></button>
+                            <i class="bi bi-plus-circle" onclick="ouvrirModal('debiteur')"></i>
                         </label>
                     </div>
 
@@ -309,7 +311,7 @@ if (isset($_POST['btn_ajouter_virement'])) {
                             <input type="hidden" name="txtIdClientCrediteur" id="txtIdClientCrediteur" value="<?php echo $client_data['Id'] ?? ''; ?>">
                             <input type="hidden" name="txtSoldeCrediteur" id="txtSoldeCrediteur" value="<?php echo $client_data['Solde'] ?? ''; ?>">
                             <input type="hidden" name="txtSoldeCaisse" id="txtSoldeCaisse" value="<?php echo $caisse_data['Solde'] ?? ''; ?>">
-                            <button type="button" class="btn_choisir" name="btn_choisir_crediteur" onclick="ouvrirModal('crediteur')"><i class="bi bi-plus-circle"></i></button> 
+                            <i class="bi bi-plus-circle" onclick="ouvrirModal('crediteur')"></i>
                         </label>
                         <label class="lbl_montant_virement">Montant</label><br>
                         <input type="text" class="Montant" name="txtMontant" id="txtMontant" >

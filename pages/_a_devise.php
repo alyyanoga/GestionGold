@@ -86,7 +86,7 @@ if (isset($_POST['btn_valider_devise'])) {
             $Nom_R_client
         );
         $save = ajout_regiments($Regiment);
-        $idAchat = mysqli_insert_id($conn);
+        $idAchat = $Regiment;
 
          if ($save) {
 

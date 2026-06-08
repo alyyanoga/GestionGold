@@ -9,7 +9,7 @@
     $heure = date('H:i:s');
     $date = date('Y-m-d');
     $result2 = null;
-    
+  
 
     /* TOUJOURS charger les Caisses */
 
@@ -18,8 +18,6 @@
 
       /* CHARGEMENT DES OPERATIONS */
     
-   
-    $Id_caisse = $_GET['txtIdCaisse'];
 
     $sql2 = "SELECT * FROM mouvement_caisse ORDER BY Id DESC";
     $result2 = mysqli_query($conn, $sql2);

@@ -521,6 +521,22 @@ $result = mysqli_query($conn, $sql);
 return $result;
 }
 
+//RECUPERER LE DERNIER SOLDE DE LA TABLE MOUVEMENT CAISSE
+function dernier_solde_caisse($conn)
+{
+    $sql = "SELECT Solde
+            FROM mouvement_caisse
+            ORDER BY Id DESC
+            LIMIT 1";
+
+    $result = mysqli_query($conn, $sql);
+
+    if ($row = mysqli_fetch_assoc($result)) {
+        return $row['Solde'];
+    }
+
+    return 0;
+}
 
 ?>
 

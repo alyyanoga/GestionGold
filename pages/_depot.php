@@ -115,7 +115,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Nom_R_client
         );
 
-        $idDepot = mysqli_insert_id($conn);
+         $idDepot = mysqli_insert_id($conn);
            
 
         /*-----Insertion dans table Mouvement caisse*/
@@ -339,7 +339,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                                         {
                                     ?>
                                     <button
-                                    onclick="window.open('../pdf/facture_a_devise.php?Id=<?= $row['Id'] ?>')"
+                                    onclick="window.open('../pdf/facture_a_devise.php?Id=<?= $row['Regiment'] ?>')"
                                     class="btn-print">
 
                                     <i class="bi bi-printer"></i>
@@ -351,7 +351,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                                         {
                                     ?>
                                     <button
-                                    onclick="window.open('../pdf/facture_v_devise.php?Id=<?= $row['Id'] ?>')"
+                                    onclick="window.open('../pdf/facture_v_devise.php?Id=<?= $row['Regiment'] ?>')"
                                     class="btn-print">
 
                                     <i class="bi bi-printer"></i>

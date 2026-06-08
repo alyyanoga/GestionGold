@@ -111,7 +111,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Nature,
             $Nom_R_client
         );
-        $idRetrait = mysqli_insert_id($conn);
+        $idRetrait =  mysqli_insert_id($conn);
 
          /*-----Insertion dans table Mouvement caisse*/
 
@@ -202,7 +202,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Nature,
             $Nom_R_client
         );
-        $idRetrait = mysqli_insert_id($conn);
+        $idRetrait =  mysqli_insert_id($conn);
 
          $save = ajout_regiments($Regiment);
 
