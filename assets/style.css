@@ -767,6 +767,7 @@ td:nth-child(6) {
 }
 
 /* CELLULES CAISSE */
+
 .container-caisse {
   margin-left: 20%;
   margin-top: 5%;
@@ -785,6 +786,14 @@ td:nth-child(6) {
 }
 .groupe-field:nth-child(2) {
   padding-top: 10px;
+}
+
+.content-table-caisse {
+  margin-top: 20px;
+  width: 96%;
+  height: 380px; /* hauteur max → active scroll Y */
+  overflow: auto; /* active X et Y automatiquement */
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.534);
 }
 .table-caisse th,
 .table-caisse td {
@@ -831,6 +840,19 @@ td:nth-child(6) {
 .table-caisse th:nth-child(7),
 .table-caisse td:nth-child(7) {
   width: 12%;
+}
+.date_intervalle {
+  padding: 10px 0;
+  display: flex;
+  gap: 15px;
+}
+.btn_afficher {
+  background: #0000ff;
+  color: #ffffff;
+}
+.container_date {
+  display: flex;
+  gap: 15px;
 }
 /*--------VIREMENT--------*/
 .container_virement {
@@ -1124,6 +1146,493 @@ td:nth-child(6) {
   font-weight: bold;
 }
 
+/*---------GESTION GOLD-----------*/
+.container_gold {
+  width: 80%;
+  margin: 4.7% 19%;
+}
+
+.header_content {
+  display: flex;
+  gap: 20px;
+  border: 1px solid #000000a1;
+  box-shadow: 5px 0 5px rgba(0, 0, 0, 0.534);
+  height: 10%;
+  overflow: hidden;
+  padding: 8px 28px;
+}
+.content_input {
+  width: 100%;
+}
+
+.input_one {
+  display: flex;
+  padding-bottom: 1%;
+}
+.input_one .numero_compte {
+  width: 8%;
+  margin-right: 5%;
+  margin-left: 1%;
+}
+.input_one .nom_client {
+  width: 36%;
+  margin-right: 5%;
+  margin-left: 1%;
+}
+
+.input_one .date {
+  margin-right: 5%;
+  margin-left: 1%;
+}
+.input_two {
+  display: flex;
+}
+.input_two .rep_client {
+  width: 30%;
+  margin-right: 2%;
+  margin-left: 1%;
+}
+.input_two .rgmt {
+  width: 8%;
+  margin-right: 9.5%;
+  margin-left: 1%;
+}
+.input_two .type_operation {
+  width: 16.5%;
+}
+.btn_choisir_client {
+  background: #0000ff;
+  padding: 9px 5px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.middle_content {
+  display: flex;
+  width: 100%;
+  height: 48vh;
+  overflow: hidden;
+}
+
+.middle_content_table {
+  overflow: auto;
+  height: 35vh;
+  width: 77%;
+  margin-top: -3.5%;
+  margin-left: 3%;
+}
+.table_gold {
+  border-collapse: collapse;
+  width: 100%;
+}
+.table_gold th,
+.table_gold td {
+  border: 1px solid #020202;
+  padding: 5px;
+}
+.table_gold th:nth-child(1),
+.table_gold td:nth-child(1) {
+  width: 15%;
+  text-align: left;
+}
+.table_gold th:nth-child(2),
+.table_gold td:nth-child(2) {
+  width: 15%;
+  text-align: left;
+}
+.table_gold th:nth-child(3),
+.table_gold td:nth-child(3) {
+  width: 15%;
+  text-align: left;
+}
+.table_gold th:nth-child(4),
+.table_gold td:nth-child(4) {
+  width: 15%;
+  text-align: left;
+}
+.table_gold th:nth-child(5),
+.table_gold td:nth-child(5) {
+  width: 15%;
+  text-align: left;
+}
+
+#tableauTransaction tr {
+  cursor: pointer;
+}
+
+#tableauTransaction tr:hover {
+  background: #f2f2f2;
+}
+
+.middle_content_side {
+  margin: 0.5% 5%;
+  width: 13%;
+}
+.btn_creer {
+  padding: 5% 5%;
+  width: 105%;
+  border-radius: 5px;
+  background: yellow;
+  font-weight: bold;
+}
+.btn_brouillon {
+  margin: 5px 0;
+  padding: 5% 5%;
+  width: 105%;
+  border-radius: 5px;
+  background: brown;
+  font-weight: bold;
+}
+.img_content {
+  margin: 0% 11%;
+}
+.txt_numero_barre {
+  width: 100%;
+  height: 14%;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+.title_solde {
+  font-weight: bold;
+}
+.txt_solde_client {
+  width: 100%;
+}
+.hr {
+  margin-top: 0.2%;
+  border: 1px solid #000000a1;
+  box-shadow: 5px 0 5px rgba(0, 0, 0, 0.534);
+}
+.section_one {
+  display: flex;
+  margin-top: -1%;
+  width: 100%;
+  height: 8vh;
+  gap: 1px;
+}
+.section_one .input_one {
+  display: block;
+  margin-left: 3%;
+  width: 11%;
+}
+.section_one .input_two {
+  display: block;
+  width: 11%;
+}
+.section_one .input_three {
+  width: 11%;
+}
+.section_one .input_four {
+  width: 11%;
+}
+.section_one .input_five {
+  width: 9%;
+}
+.section_one .input_six {
+  width: 20%;
+}
+/*-------label----------*/
+
+.section_one .input_one label {
+  width: 100%;
+  background: rgb(161, 170, 180);
+  color: #000;
+  border: 1px solid #000;
+  font-weight: bold;
+}
+.section_one .input_two label {
+  width: 100%;
+  background: rgb(161, 170, 180);
+  color: #000;
+  border: 1px solid #000;
+  font-weight: bold;
+}
+.section_one .input_three label {
+  width: 100%;
+  background: rgb(161, 170, 180);
+  color: #000;
+  border: 1px solid #000;
+  font-weight: bold;
+}
+.section_one .input_four label {
+  width: 100%;
+  background: rgb(161, 170, 180);
+  color: #000;
+  border: 1px solid #000;
+  font-weight: bold;
+}
+.section_one .input_five label {
+  width: 100%;
+  background: rgb(161, 170, 180);
+  color: #000;
+  border: 1px solid #000;
+  font-weight: bold;
+}
+.section_one .input_six label {
+  width: 100%;
+  background: rgb(161, 170, 180);
+  color: #000;
+  border: 1px solid #000;
+  font-weight: bold;
+}
+/*---------Input---------*/
+.section_one .input_one .base {
+  width: 100%;
+  border: 1px solid #000;
+  font-weight: bold;
+}
+.section_one .input_two .poids_air {
+  width: 100%;
+  border: 1px solid #000;
+  font-weight: bold;
+}
+.section_one .input_three .poids_eau {
+  width: 100%;
+  border: 1px solid #000;
+  font-weight: bold;
+}
+.section_one .input_four .densite {
+  width: 100%;
+  border: 1px solid #000;
+  background: #a39e9e80;
+  font-weight: bold;
+}
+.section_one .input_five .carat {
+  width: 100%;
+  border: 1px solid #000;
+  font-weight: bold;
+}
+.section_one .input_six .achat_gold_montant {
+  width: 100%;
+  border: 1px solid #000;
+  background: #d49f9fbb;
+  font-weight: bold;
+}
+.section_one .input_seven {
+  height: 1%;
+  padding: 5px 10px;
+  display: flex;
+  gap: 15px;
+}
+.bi-plus-circle-fill {
+  color: #0000ff;
+  font-size: 30px;
+}
+.btn_plus {
+  border: none;
+  background: transparent;
+}
+
+.btn_valide_gold {
+  background: #00ff00;
+  padding: 5px 6px;
+  height: 40px;
+  font-weight: bold;
+}
+.btn_affiche_gold {
+  background: gray;
+  padding: 5px 4px;
+  height: 40px;
+  font-weight: bold;
+}
+
+/*-----SECTION TWO---*/
+.lbl_sous_totaux {
+  width: 80%;
+  text-align: center;
+  color: #000;
+  font-weight: bold;
+}
+
+.section_two .base_montant {
+  margin-left: 3%;
+  width: 11%;
+  background: #a39e9e80;
+  font-weight: bold;
+}
+
+.section_two .poids_air_montant {
+  margin-left: -0.3%;
+  width: 11%;
+  background: #a39e9e80;
+  font-weight: bold;
+}
+.section_two .poids_eau_montant {
+  width: 11%;
+  margin-left: -0.3%;
+  background: #a39e9e80;
+  font-weight: bold;
+}
+.section_two .densite_montant {
+  width: 11%;
+  margin-left: -0.3%;
+  background: #a39e9e80;
+  font-weight: bold;
+}
+.section_two .carat_montant {
+  width: 9%;
+  margin-left: -0.3%;
+  background: #a39e9e80;
+  font-weight: bold;
+}
+.section_two .somme_montant {
+  width: 20%;
+  margin-left: -0.3%;
+  background: #d49f9fbb;
+  font-weight: bold;
+}
+/*-------------MODAL BROUILLON-------------*/
+.close-brouillon {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+.modalBrouillon {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+.modal-content-brouillon {
+  background: rgb(245, 242, 242);
+  width: 80%;
+  max-width: 80%;
+  margin: 80px 18.4%;
+  padding: 20px;
+  border-radius: 10px;
+  height: 500px;
+}
+.table_brouillon {
+  min-width: 1160px;
+  border-collapse: collapse;
+  overflow: auto;
+}
+.table-responsive-brouillon {
+  overflow: auto;
+  height: 60vh;
+  width: 100%;
+}
+
+.table_brouillon th,
+.table_brouillon td {
+  border: 1px solid #020202;
+  padding: 5px;
+}
+.modalValidation {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/*--------VALIDATION FINALE----------*/
+
+.modalValidation {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+.modal-content-validation {
+  background: rgb(245, 242, 242);
+  width: 45%;
+  max-width: 45%;
+  margin: 80px 30.4%;
+  padding: 20px 30px;
+  border-radius: 10px;
+  height: 400px;
+}
+.close-validation {
+  font-size: large;
+  margin-left: 100%;
+}
+.close-validation:hover {
+  cursor: pointer;
+}
+.content-validation {
+  display: flex;
+  gap: 0px;
+}
+.input-content-validation {
+  width: 80%;
+}
+.btn-content-modif-supprimer {
+  width: 5%;
+}
+.input-content-validation input {
+  background: transparent;
+  border: none;
+  font-weight: bold;
+}
+.input-content-validation-one,
+.input-content-validation-two,
+.input-content-validation-three,
+.input-content-validation-four,
+.input-content-validation-five,
+.input-content-validation-six,
+.input-content-validation-seven,
+.input-content-validation-eight,
+.input-content-validation-nine {
+  padding: 5px;
+}
+.input-content-validation-two .Date {
+  width: 25%;
+}
+.input-content-validation-two .Rgmt {
+  width: 25%;
+}
+.input-content-validation-three .Numéro_compte {
+  width: 20%;
+}
+.input-content-validation-three .Mouvement {
+  width: 35%;
+}
+.input-content-validation-eight .Montant {
+  width: 25%;
+}
+.input-content-validation-one input {
+  width: 55%;
+}
+.input-content-validation-four input {
+  width: 75%;
+}
+.input-content-validation-five input {
+  width: 65%;
+}
+.btn_finale_achat {
+  background-color: #00ff00;
+  color: #ffffff;
+  padding: 5px 10px;
+  font-weight: bold;
+  font-size: large;
+}
+.btn-content-modif-supprimer {
+  padding: 5px;
+}
+.btn_supprimer_validation {
+  padding-bottom: 5px;
+}
+.btn_supprimer_achat {
+  background-color: #ff0000;
+  color: #ffffff;
+  padding: 3px 3px;
+}
+.btn_modif_achat {
+  background-color: #0000ff;
+  color: #ffffff;
+  padding: 3px 9px;
+}
+
 /*-----RESPONSIVE PETIT PC ET TABLETTE***/
 
 @media (max-width: 1024px) {
@@ -1397,6 +1906,31 @@ td:nth-child(6) {
     text-align: left;
   }
 
+  /*---------CAISSE------------*/
+  .container-caisse {
+    margin-left: 5%;
+    margin-top: 3%;
+  }
+  .content-table-caisse {
+    width: 99%;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.534);
+  }
+  .container_date {
+    display: flex;
+  }
+  .date_intervalle {
+    width: 60%;
+    display: block;
+  }
+  .date_fin {
+    margin-left: 12%;
+    margin-top: 2%;
+  }
+  .btn_afficher {
+    margin: 1% 12%;
+    width: 30%;
+  }
+
   /*-----------VIREMENT-----------*/
 
   .container_virement {
@@ -1511,6 +2045,374 @@ td:nth-child(6) {
 
   .btn_choisir_devise {
     width: 100%;
+  }
+
+  /*--------------GESTION GOLD--------------*/
+  .container_gold {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15%;
+    margin-left: 0px;
+  }
+
+  /* HEADER */
+  .header_content {
+    display: block;
+    padding: 2px 2px;
+  }
+
+  .content_input {
+    display: block;
+    flex-direction: column;
+    margin-top: 2%;
+  }
+  .input_one {
+    width: 170%;
+  }
+  .input_one label,
+  .input_two label {
+    font-size: 10px;
+  }
+  .input_one .lbl_compte {
+    width: 55px;
+    padding: 2px 0;
+  }
+
+  .input_one .numero_compte {
+    width: 50px;
+    height: 5%;
+    font-size: 12px;
+    margin-right: 1%;
+  }
+  .input_one .lbl_client {
+    width: 33px;
+    padding: 2px 0;
+  }
+  .input_one .nom_client {
+    width: 191px;
+    height: 5%;
+    font-size: 12px;
+    margin-right: 2px;
+  }
+  .input_one .lbl_date {
+    display: none;
+    width: 30px;
+    padding: 2px 0;
+  }
+  .input_one .date {
+    display: none;
+    width: 65px;
+    height: 5%;
+    font-size: 12px;
+  }
+  .input_two .lbl_rep_client {
+    width: 60px;
+    padding: 2px 0;
+  }
+  .input_two .rep_client {
+    width: 150px;
+    height: 5%;
+    font-size: 12px;
+    margin-right: 1%;
+  }
+  .input_two .lbl_regiment {
+    width: 25px;
+    padding: 2px 0;
+  }
+  .input_two .rgmt {
+    width: 45px;
+    height: 5%;
+    font-size: 12px;
+    margin-right: 3px;
+  }
+  .input_two .type_operation {
+    height: 5%;
+  }
+  .middle_content_table {
+    margin-left: 0;
+    margin-top: -35px;
+  }
+  .middle_content {
+    width: 102%;
+    height: 40vh;
+  }
+  .table_gold tr th {
+    font-size: 9px;
+  }
+  .table_gold tr td {
+    font-size: 9px;
+  }
+
+  .middle_content_side {
+    width: 16%;
+  }
+  .middle_content_side .btn_creer {
+    width: 60px;
+    font-size: 12px;
+  }
+  .middle_content_side .btn_brouillon {
+    width: 60px;
+    font-size: 12px;
+  }
+  .img_content img {
+    width: 60px;
+  }
+  .txt_numero_barre {
+    width: 60px;
+    font-size: 20px;
+  }
+  .title_solde {
+    font-size: 8px;
+  }
+  .txt_solde_client {
+    font-size: 11px;
+    font-weight: bold;
+    width: 60px;
+  }
+  .btn_client_gold {
+    width: 100%;
+  }
+
+  .btn_choisir_client {
+    width: 100%;
+  }
+
+  .footer_content .section_one {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .section_one .input_one {
+    margin-left: 0px;
+  }
+  .section_one .input_one label {
+    margin-left: 0px;
+    width: 50px;
+  }
+  .section_one .input_two {
+    margin-left: 5px;
+  }
+  .section_one .input_three {
+    margin-left: 5px;
+  }
+  .section_one .input_four {
+    margin-left: 5px;
+  }
+  .section_one .input_five {
+    margin-left: 5px;
+  }
+  .section_one .input_six {
+    margin-left: 5px;
+  }
+  .section_one .input_one .base {
+    width: 50px;
+    font-size: 11px;
+    padding: 2px 0;
+  }
+  .section_one .input_two label {
+    width: 50px;
+  }
+
+  .section_one .input_two .poids_air {
+    width: 50px;
+    font-size: 11px;
+    padding: 2px 0;
+    margin-right: 2px;
+  }
+  .section_one .input_three label {
+    width: 55px;
+    font-size: 10px;
+  }
+  .section_one .input_three .poids_eau {
+    width: 53px;
+    font-size: 11px;
+    padding: 2px 0;
+  }
+  .section_one .input_four label {
+    width: 50px;
+    font-size: 10px;
+    margin-left: 2px;
+  }
+  .section_one .input_four .densite {
+    width: 47px;
+    font-size: 11px;
+    margin-left: 2px;
+    padding: 2px 0;
+  }
+
+  .section_one .input_five label {
+    width: 40px;
+    font-size: 10px;
+    margin-left: 0px;
+  }
+  .section_one .input_five .carat {
+    width: 40px;
+    font-size: 11px;
+    margin-left: 0px;
+    padding: 2px 0;
+  }
+  .section_one .input_six label {
+    width: 80px;
+    font-size: 10px;
+    margin-left: -2px;
+  }
+  .section_one .input_six .achat_gold_montant {
+    width: 80px;
+    margin-left: -2px;
+    margin-top: 3px;
+    height: 23px;
+    font-size: 11px;
+  }
+  .section_one .input_seven {
+    display: block;
+  }
+
+  .section_two .input_section_two {
+    margin-left: 0;
+  }
+  .section_two .input_section_two .base_montant {
+    margin-left: 0;
+    width: 50px;
+    font-size: 11px;
+    padding: 2px 0;
+  }
+  .section_two .input_section_two .poids_air_montant {
+    width: 50px;
+    font-size: 11px;
+    padding: 2px 0;
+    margin-left: -5px;
+  }
+
+  .section_two .input_section_two .poids_eau_montant {
+    width: 50px;
+    font-size: 11px;
+    padding: 2px 0;
+    margin-left: -4px;
+  }
+  .section_two .input_section_two .densite_montant {
+    width: 50px;
+    font-size: 11px;
+    padding: 2px 0;
+    margin-left: -4px;
+  }
+  .section_two .input_section_two .carat_montant {
+    width: 40px;
+    font-size: 11px;
+    padding: 2px 0;
+    margin-left: -4px;
+  }
+  .section_two .input_section_two .somme_montant {
+    width: 80px;
+    margin-left: -5px;
+    margin-top: 3px;
+    padding: 2px 0;
+    font-size: 11px;
+  }
+  .btn_plus {
+    border: none;
+    background: transparent;
+    margin-top: -10px;
+  }
+  .btn_valide_gold {
+    width: 70px;
+    height: auto;
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+  .btn_affiche_gold {
+    width: 70px;
+    height: auto;
+    font-size: 12px;
+  }
+  /*----MODALE BROUILLON---------*/
+
+  .modalBrouillon {
+    width: 120%;
+  }
+  .modal-content-brouillon {
+    width: 130%;
+    margin: 10% 2%;
+    padding: 8px;
+    max-height: 80vh;
+  }
+
+  .modal-content-brouillon h2 {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .table-responsive-brouillon {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table_brouillon {
+    min-width: 850px;
+    font-size: 11px;
+  }
+
+  .table_brouillon th,
+  .table_brouillon td {
+    padding: 5px;
+  }
+
+  .close-brouillon {
+    font-size: 24px;
+  }
+  /**------VALIDATION-------*/
+  .modalValidation {
+    width: 100%;
+  }
+  .modal-content-validation {
+    width: 95%;
+    height: 85vh;
+    max-width: 1400px;
+    margin: 68px auto;
+    padding: 15px;
+  }
+
+  .input-content-validation {
+    width: 80%;
+    min-width: 220px;
+  }
+
+  .input-content-validation-one {
+    flex-direction: column;
+    gap: 0;
+  }
+  .input-content-validation-one .User {
+    width: 30%;
+    margin-left: -122px;
+  }
+  .input-content-validation-two {
+    flex-direction: column;
+  }
+  .input-content-validation-one label {
+    width: 50%;
+  }
+  .input-content-validation-two label:nth-child(1) {
+    width: 13%;
+  }
+  .input-content-validation-two .lblFacture {
+    width: 25%;
+  }
+  .input-content-validation-two .Date {
+    width: 28%;
+  }
+  .input-content-validation-four label {
+    width: 27%;
+  }
+
+  .input-content-validation-eight label {
+    width: 25%;
+  }
+  .input-content-validation-eight .Montant {
+    width: 30%;
+  }
+
+  .btn-content-modif-supprimer {
+    margin-left: -15px;
   }
 }
 

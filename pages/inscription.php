@@ -183,8 +183,12 @@ $result = mysqli_query($conn, $sql);
                                     <td><?php echo $row['Identifiant']; ?></td>
                                     <td><?php echo $row['Password']; ?></td>
                                     <td><?php echo $row['Role']; ?></td>
-                                    <td><a href="?edit=<?php echo $row['Id'] ?>" id="btn_modifier"><img src="../assets/icone/img_modifier.png" class="ico" alt="modifier" srcset=""></a></td>
-                                     <td><a href="?delete=<?php echo $row['Id'] ?>" id="btn_supprimer" onclick="return confirm('Supprimer cette ligne ?')"><img src="../assets/icone/img_supprimer.png" class="ico" alt="Supprimer" srcset=""></a></td>
+                                    <td><a href="?edit=<?php echo $row['Id'] ?>" id="btn_modifier"><div class="text-center">
+                                    <i class="bi bi-pencil-square fs-4"></i>
+                                    </div></a></td>
+                                    <td><a href="?delete=<?php echo $row['Id'] ?>" id="btn_supprimer" onclick="return confirm('Supprimer cette ligne ?')"><div class="text-center">
+                                    <i class="bi bi-trash fs-4"></i>
+                                    </div></a></td>
                                 </tr>
 
                             <?php } ?>

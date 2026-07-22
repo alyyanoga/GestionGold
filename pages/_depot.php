@@ -8,6 +8,9 @@
     $message  ="";
     date_default_timezone_set('Africa/Bamako');
     $heure = date('H:i:s');
+	$date = date('d/m/Y');
+
+
 
 
     /* TOUJOURS charger les clients */
@@ -51,7 +54,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
     $caisse_data = mysqli_fetch_assoc($resCaisse);
 }
 
-    /* FAIRE LE DEPOT ARGENT DANS LE COMPTE CLIENT */
+    /* FAIRE LE RETRAIT ARGENT DANS LE COMPTE CLIENT */
     if (isset($_POST['btn_valider_depot'])) {
     
    if (!isset($_POST['checkbox'])) {
@@ -76,8 +79,8 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
     /*----INSERTION DANS LA TABLE MOUVEMENT CAISE------*/
 
-    $Debit = (int) str_replace(' ', '', $_POST['txtMontant']);
-    $Credit = "0";
+    $Debit =(int) str_replace(' ', '', $_POST['txtMontant']);
+    $Credit =  "0";
     $Transaction = $Nature;
 
 
@@ -256,7 +259,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                   <label class="lbl">Rgmt: &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</label>
                   <input type="text" class="rgmt" name="txtRegiment" id="txtRegiment"  value="<?php echo sprintf("%04d", $Regiment); ?>" readonly>
                   <label class="lbl">Date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                  <input type="date" name="txtDate" class="txtDate" id="txtDate" value="<?php echo date('Y-m-d'); ?>" readonly>
+                  <input type="text" name="txtDate" class="date" id="txtDate" value="<?php echo date('d/m/Y');?>" readonly>
                   <input type="hidden" name="txtHeure" class="txtHeure" id="txtHeure" readonly>
                   <span class="groupe_radio">
                       <input type="checkbox" name="checkbox" class="txtcheckbox" id="txtcheckbox" value="1" readonly>
@@ -290,7 +293,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
               <tr>
                   <th style="text-align: left;">Voir</th>
                   <th style="text-align: left;">Date</th>
-                  <th style="text-align: left;">Représentant Client</th>
+                  <th style="text-align: left;">Mouvements</th>
                   <th style="text-align: left;">Quantité</th>
                   <th style="text-align: left;">Prix</th>
                   <th style="text-align: left;">Montant dépot</th>
@@ -307,12 +310,13 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                                     
                                     <td>
                                  <?php
-                                        if($row['Transactions'] == 'DEPOT ARGENT')
+                                        if($row['Transactions'] == 'DEPOT ARGENT'  &&
+                                        $row['Nature'] == 'DEPOT ARGENT')
                                         {
                                     ?>
 
                                     <button
-                                    onclick="window.open('../pdf/facture_depot.php?Id=<?= $row['Id'] ?>')"
+                                    onclick="window.open('../pdf/revoir_facture_depot.php?Id=<?= $row['Regiment'] ?>')"
                                     class="btn-print">
 
                                     <i class="bi bi-printer"></i>
@@ -321,12 +325,43 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
                                     <?php
                                         }
-                                        else if($row['Transactions'] == 'RETRAIT ARGENT')
+                                        else if($row['Transactions'] == 'RETRAIT ARGENT'  &&
+                                        $row['Nature'] == 'RETRAIT ARGENT')
                                         {
                                     ?>
 
                                     <button
-                                    onclick="window.open('../pdf/facture_retrait.php?Id=<?= $row['Id'] ?>')"
+                                    onclick="window.open('../pdf/revoir_facture_retrait.php?Id=<?= $row['Regiment'] ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+
+                                    <?php
+                                    }
+                                    else if (
+                                        $row['Transactions'] == 'DEPOT ARGENT' &&
+                                        $row['Nature'] == 'VIREMENT DEPOT ARGENT'
+                                    ) {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/facture_depot_virement.php?Id=<?= $row['Regiment'] ?>&Nature=<?= urlencode('VIREMENT  ARGENT') ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+
+                                    <?php
+                                    }
+                                    else if (
+                                        $row['Transactions'] == 'RETRAIT ARGENT' &&
+                                        $row['Nature'] == 'VIREMENT RETRAIT ARGENT'
+                                    ) {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/facture_retrait_virement.php?Id=<?= $row['Regiment'] ?>&Nature=<?= urlencode('VIREMENT RETRAIT ARGENT') ?>')"
                                     class="btn-print">
 
                                     <i class="bi bi-printer"></i>
@@ -358,14 +393,26 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
                                     </button>
                                     
+                                    <?php
+                                        }
+                                        else if($row['Transactions'] == 'DEPOT OR')
+                                        {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/revoir_facture_a_gold.php?rgmt=<?= urlencode($row['Regiment']) ?>&date=<?= urlencode($row['Date']) ?>&heure=<?= urlencode($row['Heure']) ?>','_blank')"
+                                    class="btn-print">
 
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+                                
                                     <?php } ?>
                                      </td>
 
-                                    <td style="text-align: left;"><?php echo date('d/m/Y', strtotime($row['Date'])); ?></td>
+                                    <td style="text-align: left;"><?php echo $row['Date']; ?></td>
                                     <td style="text-align: left;"><?php echo $row['R_client']; ?></td>
-                                    <td style="text-align: left;"><?php echo number_format($row['Quantite'], 0, ',', ' '); ?></td>
-                                    <td style="text-align: left;"><?php echo number_format($row['Prix'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Quantite'], 2, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Prix'], 2, ',', ' '); ?></td>
                                     <td style="text-align: left;"><?php echo number_format($row['Montant_depot'], 0, ',', ' '); ?></td>
                                     <td style="text-align: left;"><?php echo number_format($row['Montant_retrait'], 0, ',', ' '); ?></td>
                                     <td style="text-align: left;"><?php echo number_format($row['Solde'], 0, ',', ' '); ?></td>

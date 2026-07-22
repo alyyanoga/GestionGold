@@ -7,20 +7,17 @@
     $message  ="";
     date_default_timezone_set('Africa/Bamako');
     $heure = date('H:i:s');
-    $date = date('Y-m-d');
+    $date = date('d-m-Y');
     $result2 = null;
+
+    $date_debut = $_GET['date_debut'] ?? '';
+    $date_fin   = $_GET['date_fin'] ?? '';
   
 
     /* TOUJOURS charger les Caisses */
 
     $sql = "SELECT * FROM Caisse";
     $result = mysqli_query($conn, $sql);
-
-      /* CHARGEMENT DES OPERATIONS */
-    
-
-    $sql2 = "SELECT * FROM mouvement_caisse ORDER BY Id DESC";
-    $result2 = mysqli_query($conn, $sql2);
 
     /* RECUPERATION LE SOLDE DE LA CAISSE */
 
@@ -38,7 +35,7 @@
        
    
     $Date = $_POST['txtDate'] ?? '';
-    $Client = $_POST['txtCaisse'] ?? '';
+    $Client = $_POST['txtMotif'] ?? '';
     $Debit = (int) str_replace(' ', '', $_POST['txtMontant']);
     $Credit = "0";
     $Transaction = $_POST['txtMotif'] ?? '';
@@ -124,6 +121,32 @@
             ";
     }
    }
+  //AFFICHER LES OPERATIONS A INTERVALLE DATE
+  if (isset($_POST['btn_afficher'])) {
+
+    $date_debut = $_POST['date_debut'];
+    $date_fin   = $_POST['date_fin'];
+
+    $sql2 = "SELECT *
+             FROM mouvement_caisse
+             WHERE Date BETWEEN '$date_debut' AND '$date_fin'
+             ORDER BY Id DESC";
+    ?>
+    <script>
+        window.open(
+        '../pdf/facture_caisse.php?date_debut=<?= $date_debut ?>&date_fin=<?= $date_fin ?>',
+        '_blank'
+        );
+    </script>
+<?php
+} else {
+
+    $sql2 = "SELECT *
+             FROM mouvement_caisse
+             ORDER BY Id DESC";
+}
+
+$result2 = mysqli_query($conn, $sql2);
 
 ?>
     
@@ -146,7 +169,7 @@
                   <label class="lbl">Caisse:&nbsp;&nbsp;&nbsp;&nbsp;</label>
                   <input type="text" class="compte" name="txtCaisse" id="txtCaisse" value="<?php echo $caisse_data['Caisse'] ?? ''; ?>"  readonly >
                   <label class="lbl">Date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                  <input type="date" name="txtDate" class="_txtDate" id="txtDate" value="<?php echo $date ?>" readonly>
+                  <input type="txt" name="txtDate" class="_txtDate" id="txtDate" value="<?php echo date('d/m/Y');?>" readonly>
                   <input type="hidden" name="txtHeure" class="txtHeure" id="txtHeure" readonly>
                   <select name="typeOperation" id="typeOperation">
                             <option value="" selected disabled>choisir</option>
@@ -173,12 +196,12 @@
             </div>
           </div>
 
-           <div class="content-table">
+           <div class="content-table-caisse">
             <table border="1" class="table-caisse">
 
               <tr>
                   <th>Date</th>
-                  <th>Client</th>
+                  <th>Mouvements</th>
                   <th>Debit</th>
                   <th>Credit</th>
                   <th>Solde disponible</th>
@@ -190,7 +213,7 @@
 
                             <?php while($row = mysqli_fetch_assoc($result2)) { ?>
                                     
-                                    <td><?php echo date('d/m/Y', strtotime($row['Date'])); ?></td>
+                                    <td><?php echo $row['Date']; ?></td>
                                     <td><?php echo $row['Client']; ?></td>
                                     <td><?php echo number_format($row['Debit'], 0, ',', ' '); ?></td>
                                     <td><?php echo number_format($row['Credit'], 0, ',', ' '); ?></td>
@@ -212,6 +235,21 @@
 
             </table>
           </div>
+          <form method="POST">
+            <div class="container_date">
+              <div class="date_intervalle">
+                <div class="content_date_debut">
+                  <label for="">Debut :</label>
+                  <input type="date" class="date_debut" name="date_debut" id="date_debut" value="<?php echo date('Y-m-d');?>">
+                </div>
+                <div class="content_date_fin">
+                  <label for="">Fin :</label>
+                  <input type="date" class="date_fin" name="date_fin" id="date_fin" value="<?php echo date('Y-m-d');?>">
+                </div>
+                </div>
+              <button type="submit" name="btn_afficher" class="btn_afficher">AFFICHER</button>
+            </div>
+          </form>
 
 
              <!-- MODAL -->

@@ -8,19 +8,21 @@
     $message  ="";
     date_default_timezone_set('Africa/Bamako');
     $heure = date('H:i:s');
+	$date = date('d/m/Y');
 
 
-    /* TOUJOURS charger les utilisateurs */
+
+
+    /* TOUJOURS charger les clients */
 
     $sql = "SELECT * FROM clients";
     $result = mysqli_query($conn, $sql);
 
-    
-
       /* CHARGEMENT DES DONNEES DE LA TABLE MOUVEMENT_TOTALES */
 
-         $client_data = null;
-        $result2 = null;
+    $client_data = null;
+    $result2 = null;
+    $SansCaisse = isset($_POST['checkbox']);
 
 if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
@@ -28,7 +30,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
     /* CHARGEMENT DES OPERATIONS */
 
-    $sql2 = "SELECT * FROM mouvement_totales
+  $sql2 = "SELECT * FROM mouvement_totales
              WHERE Id_client = '$Id_client'
              ORDER BY Id DESC";
 
@@ -52,9 +54,11 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
     $caisse_data = mysqli_fetch_assoc($resCaisse);
 }
 
-    /* FAIRE LE DEPOT ARGENT DANS LE COMPTE CLIENT */
+    /* FAIRE LE RETRAIT ARGENT DANS LE COMPTE CLIENT */
     if (isset($_POST['btn_valider_retrait'])) {
-    if (!isset($_POST['checkbox'])) {
+    
+   if (!isset($_POST['checkbox'])) {
+
     $Date = $_POST['txtDate'] ?? '';
     $Compte = $_POST['txtCompte'] ?? '';
     $Client = $_POST['txtNomComplet'] ?? '';
@@ -72,9 +76,11 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
     $Nom_R_client = $_POST['txtRepClient'] ?? '';
     /*------RECUPERER L'ANCIEN SOLDE DE LA CAISSE-------*/
     $Ancien_solde_caisse  = (int) str_replace(' ', '', $_POST['txtSoldeCaisse']);
+
     /*----INSERTION DANS LA TABLE MOUVEMENT CAISE------*/
-    $Debit = "0";
-    $Credit = (int) str_replace(' ', '', $_POST['txtMontant']);
+
+    $Debit ="0";
+    $Credit =  (int) str_replace(' ', '', $_POST['txtMontant']);
     $Transaction = $Nature;
 
 
@@ -111,33 +117,36 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Nature,
             $Nom_R_client
         );
-        $idRetrait =  mysqli_insert_id($conn);
 
-         /*-----Insertion dans table Mouvement caisse*/
+         $idRetrait = mysqli_insert_id($conn);
+           
+
+        /*-----Insertion dans table Mouvement caisse*/
 
         $save = ajout_caisse(
             $Date,
-            "RETRAIT / ". $Client,
+            "RETRAIT / ".$Client,
             $Debit,
             $Credit,
             $nouveau_solde_caisse,
             $Transaction,
             $Utilisateur
         );
-
+           
          $save = ajout_regiments($Regiment);
 
          
 
         if ($save) {
 
-             echo "
+         
+            echo "
             <script>
             window.location='_retrait.php';
             window.open('../pdf/facture_retrait.php?Id=$idRetrait');
             </script>
             ";
-
+        
             $Regiment = dernier_numero_regiment($conn);
 
         } else {
@@ -146,8 +155,11 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
         }
     }
-    } else{
-   $Date = $_POST['txtDate'] ?? '';
+    
+
+    } else {
+
+     $Date = $_POST['txtDate'] ?? '';
     $Compte = $_POST['txtCompte'] ?? '';
     $Client = $_POST['txtNomComplet'] ?? '';
     $R_client = $_POST['txtRepClient'] ?? '';
@@ -164,11 +176,8 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
     $Nom_R_client = $_POST['txtRepClient'] ?? '';
     /*------RECUPERER L'ANCIEN SOLDE DE LA CAISSE-------*/
     $Ancien_solde_caisse  = (int) str_replace(' ', '', $_POST['txtSoldeCaisse']);
-    /*----INSERTION DANS LA TABLE MOUVEMENT CAISE------*/
-    $Debit = "0";
-    $Credit = (int) str_replace(' ', '', $_POST['txtMontant']);
-    $Transaction = $Nature;
 
+    /*----INSERTION DANS LA TABLE MOUVEMENT CAISE------*/
 
     if (
         empty($Compte) ||
@@ -184,7 +193,6 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
         $nouveau_solde_caisse = $Ancien_solde_caisse - $Montant_retrait;
 
         $save = modifier_solde_client($Id_client, $nouveau_solde);
-
         $save = faire_retrait(
             $Date,
             $Compte,
@@ -202,11 +210,8 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             $Nature,
             $Nom_R_client
         );
-        $idRetrait =  mysqli_insert_id($conn);
-
+         $idRetrait = mysqli_insert_id($conn);
          $save = ajout_regiments($Regiment);
-
-         
 
         if ($save) {
 
@@ -225,7 +230,6 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
         }
     }
-
     }
 
 }
@@ -255,10 +259,10 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                   <label class="lbl">Rgmt: &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</label>
                   <input type="text" class="rgmt" name="txtRegiment" id="txtRegiment"  value="<?php echo sprintf("%04d", $Regiment); ?>" readonly>
                   <label class="lbl">Date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                  <input type="date" name="txtDate" class="txtDate" id="txtDate" value="<?php echo date('Y-m-d'); ?>" readonly>
+                  <input type="text" name="txtDate" class="date" id="txtDate" value="<?php echo date('d/m/Y');?>" readonly>
                   <input type="hidden" name="txtHeure" class="txtHeure" id="txtHeure" readonly>
                   <span class="groupe_radio">
-                      <input type="checkbox" name="checkbox" class="txtcheckbox" id="txtcheckbox" value="0" readonly>
+                      <input type="checkbox" name="checkbox" class="txtcheckbox" id="txtcheckbox" value="1" readonly>
                       <span class="reporting">Reporting</span>
                   </span>
                 </div>
@@ -287,31 +291,32 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
             <table border="1" class="table-mouvement">
 
               <tr>
-                  <th>Voir</th>
-                  <th>Date</th>
-                  <th>Représentant Client</th>
-                  <th>Prix</th>
-                  <th>Quantité</th>
-                  <th>Montant dépot</th>
-                  <th>Montant retrait</th>
-                  <th>Solde disponible</th>
-                  <th>Transactions</th>
-                  <th>Heure</th>
-                  <th>Utilisateur</th>
+                  <th style="text-align: left;">Voir</th>
+                  <th style="text-align: left;">Date</th>
+                  <th style="text-align: left;">Mouvements</th>
+                  <th style="text-align: left;">Quantité</th>
+                  <th style="text-align: left;">Prix</th>
+                  <th style="text-align: left;">Montant dépot</th>
+                  <th style="text-align: left;">Montant retrait</th>
+                  <th style="text-align: left;">Solde disponible</th>
+                  <th style="text-align: left;">Transactions</th>
+                  <th style="text-align: left;">Heure</th>
+                  <th style="text-align: left;">Utilisateur</th>
+                  
               </tr>
               <?php if ($result2 && mysqli_num_rows($result2) > 0) { ?>
 
                             <?php while($row = mysqli_fetch_assoc($result2)) { ?>
-
-                                <tr>
-                                             <td>
+                                    
+                                    <td>
                                  <?php
-                                        if($row['Transactions'] == 'DEPOT ARGENT')
+                                        if($row['Transactions'] == 'DEPOT ARGENT'  &&
+                                        $row['Nature'] == 'DEPOT ARGENT')
                                         {
                                     ?>
 
                                     <button
-                                    onclick="window.open('../pdf/facture_depot.php?Id=<?= $row['Id'] ?>')"
+                                    onclick="window.open('../pdf/revoir_facture_depot.php?Id=<?= $row['Regiment'] ?>')"
                                     class="btn-print">
 
                                     <i class="bi bi-printer"></i>
@@ -320,24 +325,56 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
                                     <?php
                                         }
-                                        else if($row['Transactions'] == 'RETRAIT ARGENT')
+                                        else if($row['Transactions'] == 'RETRAIT ARGENT'  &&
+                                        $row['Nature'] == 'RETRAIT ARGENT')
                                         {
                                     ?>
 
                                     <button
-                                    onclick="window.open('../pdf/facture_retrait.php?Id=<?= $row['Id'] ?>')"
+                                    onclick="window.open('../pdf/revoir_facture_retrait.php?Id=<?= $row['Regiment'] ?>')"
                                     class="btn-print">
 
                                     <i class="bi bi-printer"></i>
 
                                     </button>
-                                   <?php
+
+                                    <?php
+                                    }
+                                    else if (
+                                        $row['Transactions'] == 'DEPOT ARGENT' &&
+                                        $row['Nature'] == 'VIREMENT DEPOT ARGENT'
+                                    ) {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/facture_depot_virement.php?Id=<?= $row['Regiment'] ?>&Nature=<?= urlencode('VIREMENT  ARGENT') ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+
+                                    <?php
+                                    }
+                                    else if (
+                                        $row['Transactions'] == 'RETRAIT ARGENT' &&
+                                        $row['Nature'] == 'VIREMENT RETRAIT ARGENT'
+                                    ) {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/facture_retrait_virement.php?Id=<?= $row['Regiment'] ?>&Nature=<?= urlencode('VIREMENT RETRAIT ARGENT') ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+
+                                    <?php
                                         }
                                         else if($row['Transactions'] == 'ACHAT DEVISE')
                                         {
                                     ?>
                                     <button
-                                    onclick="window.open('../pdf/facture_a_devise.php?Id=<?= $row['Id'] ?>')"
+                                    onclick="window.open('../pdf/facture_a_devise.php?Id=<?= $row['Regiment'] ?>')"
                                     class="btn-print">
 
                                     <i class="bi bi-printer"></i>
@@ -349,25 +386,39 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                                         {
                                     ?>
                                     <button
-                                    onclick="window.open('../pdf/facture_v_devise.php?Id=<?= $row['Id'] ?>')"
+                                    onclick="window.open('../pdf/facture_v_devise.php?Id=<?= $row['Regiment'] ?>')"
                                     class="btn-print">
 
                                     <i class="bi bi-printer"></i>
 
                                     </button>
+                                    
+                                    <?php
+                                        }
+                                        else if($row['Transactions'] == 'DEPOT OR')
+                                        {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/revoir_facture_a_gold.php?rgmt=<?= urlencode($row['Regiment']) ?>','_blank')"
+                                    class="btn-print">
 
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+                                
                                     <?php } ?>
                                      </td>
-                                    <td><?php echo date('d/m/Y', strtotime($row['Date'])); ?></td>
-                                    <td><?php echo $row['R_client']; ?></td>
-                                    <td><?php echo number_format($row['Prix'], 0, ',', ' '); ?></td>
-                                    <td><?php echo number_format($row['Quantite'], 0, ',', ' '); ?></td>
-                                    <td><?php echo number_format($row['Montant_depot'], 0, ',', ' '); ?></td>
-                                    <td><?php echo number_format($row['Montant_retrait'], 0, ',', ' '); ?></td>
-                                    <td><?php echo number_format($row['Solde'], 0, ',', ' '); ?></td>
-                                    <td><?php echo $row['Transactions']; ?></td>
-                                    <td><?php echo $row['Heure']; ?></td>
-                                    <td><?php echo $row['Utilisateur']; ?></td>
+
+                                    <td style="text-align: left;"><?php echo $row['Date']; ?></td>
+                                    <td style="text-align: left;"><?php echo $row['R_client']; ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Quantite'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Prix'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Montant_depot'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Montant_retrait'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo number_format($row['Solde'], 0, ',', ' '); ?></td>
+                                    <td style="text-align: left;"><?php echo $row['Transactions']; ?></td>
+                                    <td style="text-align: left;"><?php echo $row['Heure']; ?></td>
+                                    <td style="text-align: left;"><?php echo $row['Utilisateur']; ?></td>
                                     
                                 </tr>
 
@@ -397,7 +448,9 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
         </span>
 
         <h3>Liste des clients</h3>
-         <input type="text" class="rechercheClient" id="rechercheClient" placeholder="Rechercher un client..." onkeyup="filtrerClient()">
+		<div class="barre_recherche">
+            <input type="text" class="rechercheClient" id="rechercheClient" placeholder="Rechercher un client..." onkeyup="filtrerClient()">
+        </div>
             <br>
     <div class="table-responsive">
        <table border="1" class="table-client" id="tableClient">

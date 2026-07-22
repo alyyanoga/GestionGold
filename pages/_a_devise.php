@@ -33,9 +33,9 @@ if (isset($_POST['btn_valider_devise'])) {
     $R_client = $_POST['txtRepClient'] ?? '';
     $Prix =$_POST['txtTaux'] ?? '';
     $Quantite = str_replace(' ', '', $_POST['txtMontantUSD'] ?? '');
-    $Montant_depot = (int) str_replace(' ', '', $_POST['txtMontantCFA']);
+   $Montant_depot = str_replace(' ', '', $_POST['txtMontantCFA']);
     $Montant_retrait = "0";
-    $Ancien_solde  = (int) str_replace(' ', '', $_POST['txtSolde']);
+    $Ancien_solde  =  str_replace(' ', '', $_POST['txtSolde']);
     $Regiment = $_POST['txtRegiment'] ?? '';
     $Id_client = $_POST['txtIdClient'] ?? '';
     $Nature = "ACHAT DEVISE";

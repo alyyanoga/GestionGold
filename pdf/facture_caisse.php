@@ -3,10 +3,15 @@
 require('fpdf.php');
 include(__DIR__ . "/../functions/functions.php");
 
+date_default_timezone_set('Africa/Bamako');
+$date_debut = $_GET['date_debut'] ?? '';
+$date_fin   = $_GET['date_fin'] ?? '';
 
 $heure = date('H:i:s');
-$date = date('Y-m-d');
+$date = date('d-m-Y');
 
+$date_debut_affiche = !empty($date_debut) ? date('d/m/Y', strtotime($date_debut)) : '';
+$date_fin_affiche   = !empty($date_fin) ? date('d/m/Y', strtotime($date_fin)) : '';
 
 $pdf = new FPDF();
 $pdf->AddPage();
@@ -14,7 +19,7 @@ $pdf->AddPage();
 $pdf->SetFont('Arial','B',16);
 
 $pdf->Image('../assets/Icone/Billet.png',5,5,20,20);
-$pdf->Image('../assets/Icone/or.jpg',182,5,20,20);
+$pdf->Image('../assets/Icone/or.png',182,5,20,20);
 $pdf->SetFont('Arial','B',22);
 $pdf->SetX(55);
 $pdf->Cell(100,10,'DIALLO SERVICE',1,1,'C');
@@ -31,23 +36,27 @@ $pdf->Cell(0, 0,'Date: '. $date, 0, 1, 'C');
 $pdf->SetX(110);
 $pdf->Cell(0, 0, 'Heure '. $heure, 0, 1, 'C');
 
-$pdf->SetFont('Arial', 'B', 14);
+$pdf->SetFont('Arial', 'B', 12);
 $pdf->Cell(0, 25, 'LISTE DES OPERATIONS DE CAISSE', 0, 1, 'C');
 
-$pdf->Ln(5);
+$pdf->Ln(-4);
 
 // En-têtes
 $pdf->SetFont('Arial', 'B', 10);
 
 $pdf->Cell(25, 8, 'Date', 1);
-$pdf->Cell(65, 8, 'Client', 1);
+$pdf->Cell(65, 8, 'Mouvements et Clients', 1);
 $pdf->Cell(30, 8, 'Debit', 1);
 $pdf->Cell(30, 8, 'Credit', 1);
 $pdf->Cell(30, 8, 'Solde', 1);
 
 $pdf->Ln();
 
-$sql = "SELECT * FROM mouvement_caisse ORDER BY Id DESC";
+$sql = "SELECT *
+        FROM mouvement_caisse
+        WHERE Date BETWEEN '$date_debut_affiche' AND '$date_fin_affiche'
+        ORDER BY Id ASC";
+
 $result = mysqli_query($conn, $sql);
 
 $pdf->SetFont('Arial', '', 9);
@@ -64,7 +73,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
    
     $pdf->Cell(25, 7, $row['Date'], 1);
-    $pdf->Cell(65, 7, utf8_decode($row['Client']), 1);
+    $pdf->Cell(65, 7, $row['Client'], 1);
     $pdf->Cell(30, 7, number_format($row['Debit'], 0, ',', ' '), 1, 0, 'R');
     $pdf->Cell(30, 7, number_format($row['Credit'], 0, ',', ' '), 1, 0, 'R');
     $pdf->Cell(30, 7, number_format($row['Solde'], 0, ',', ' '), 1, 0, 'R');

@@ -1,4 +1,11 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+function txt($texte)
+{
+    return iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $texte);
+}
 
 require('fpdf.php');
 include(__DIR__ . "/../functions/functions.php");
@@ -16,7 +23,7 @@ $pdf->AddPage();
 $pdf->SetFont('Arial','B',16);
 
 $pdf->Image('../assets/Icone/Billet.png',5,5,20,20);
-$pdf->Image('../assets/Icone/or.jpg',182,5,20,20);
+$pdf->Image('../assets/Icone/or.png',182,5,20,20);
 $pdf->SetFont('Arial','B',22);
 $pdf->SetX(55);
 $pdf->Cell(100,10,'DIALLO SERVICE',1,1,'C');
@@ -32,7 +39,7 @@ $pdf->Cell(20,4,'Regiment : ',0,0);
 $pdf->Cell(100,4,$data['Regiment'],0,1);
 $pdf->SetX(140);
 $pdf->Cell(12,10,'Date : ',0,0);
-$pdf->Cell(20,10,date('d/m/Y', strtotime($data['Date'])).' '.$data['Heure'],0,1);
+$pdf->Cell(20,10, $data['Date'].' '.$data['Heure'],0,1);
 $pdf->SetX(140);
 $pdf->Cell(13,5,'Agent : ',0,0);
 $pdf->Cell(100,5,$data['Utilisateur'],0,1);
@@ -51,27 +58,30 @@ $pdf->SetFont('Arial','B',12);
 $pdf->Cell(180,8,"DETAILS OPERATIONS","BT",1,'C');
 
 $pdf->SetFont('Arial','B',11);
-$pdf->Cell(35,9,'Type Operation : ',0,0);
-$pdf->Cell(0,9,$data['Transactions'],0,1);
+$pdf->Cell(35,8,'Type Operation : ',0,0);
+$pdf->Cell(0,8,$data['Transactions'],0,1);
 
 $pdf->SetFont('Arial','B',11);
-$pdf->Cell(20,3,'Montant $$$ : ',0,0);
+$pdf->Cell(20,4,'Montant $$$ : ',0,0);
 $pdf->SetX(35);
-$pdf->Cell(0,3, number_format($data['Quantite'],0,' ',' '). ' $',0,1);
+$pdf->Cell(0,4, number_format($data['Quantite'],0,' ',' '). ' $',0,1);
 $pdf->SetX(80);
 $pdf->SetFont('Arial','B',11);
-$pdf->Cell(0,-3,'Taux : ',0,0);
+$pdf->Cell(0,-4,'Taux : ',0,0);
 $pdf->SetX(95);
-$pdf->Cell(0,-3,$data['Prix'],0,1);
-$pdf->SetX(130);
+$pdf->Cell(0,-4,$data['Prix'],0,1);
+$pdf->SetX(125);
 $pdf->SetFont('Arial','B',11);
-$pdf->Cell(0,3,'Montant XOF : ',0,0);
-$pdf->SetX(160);
-$pdf->Cell(0,3,number_format($data['Montant_retrait'],0,' ',' ') . ' FCFA',0,1);
+$pdf->Cell(0,4,'Montant XOF : ',0,0);
+$pdf->SetX(155);
+$pdf->Cell(0,4,number_format($data['Montant_retrait'],0,' ',' ') . ' FCFA',0,1);
 $pdf->SetFont('Arial','B',11);
-$pdf->Cell(20,10,'En lettre : ',0,0);
-$pdf->Cell(100,10,convertir_en_lettres($data['Montant_retrait']).' francs CFA',0,1);
+$pdf->Ln(3);
+$pdf->Cell(20,4,'En lettre : ',0,0);
+
+$pdf->MultiCell(160,4, txt(convertir_en_lettres($data['Montant_retrait']).' francs CFA',0,1));
 $pdf->SetFont('Arial','B',11);
+$pdf->SetX(10);
 $pdf->Cell(32,15,'Signature Agent: ',0,0);
 $pdf->Cell(20,15,'___________________',0,1);
 $pdf->SetX(118);
@@ -79,15 +89,15 @@ $pdf->SetFont('Arial','B',11);
 $pdf->Cell(32,-15,'Signature Client: ',0,0);
 $pdf->Cell(20,-15,'___________________',0,1);
 
-$pdf->Ln(5);
+$pdf->Ln(4);
 
 $pdf->Cell(190,20,'Merci pour votre confiance',0,1,'C');
 /**--------DEUXIEME FACTURE--------- */
-$pdf->Ln(8);
+$pdf->Ln(6);
 $pdf->SetFont('Arial','B',16);
 
 $pdf->Image('../assets/Icone/Billet.png',5,145,20,20);
-$pdf->Image('../assets/Icone/or.jpg',182,145,20,20);
+$pdf->Image('../assets/Icone/or.png',182,145,20,20);
 $pdf->SetFont('Arial','B',22);
 $pdf->SetX(55);
 $pdf->Cell(100,10,'DIALLO SERVICE',1,1,'C');
@@ -103,7 +113,7 @@ $pdf->Cell(20,4,'Regiment : ',0,0);
 $pdf->Cell(100,4,$data['Regiment'],0,1);
 $pdf->SetX(140);
 $pdf->Cell(12,10,'Date : ',0,0);
-$pdf->Cell(20,10,date('d/m/Y', strtotime($data['Date'])).' '.$data['Heure'],0,1);
+$pdf->Cell(20,10, $data['Date'].' '.$data['Heure'],0,1);
 $pdf->SetX(140);
 $pdf->Cell(13,5,'Agent : ',0,0);
 $pdf->Cell(100,5,$data['Utilisateur'],0,1);
@@ -133,20 +143,21 @@ $pdf->SetX(80);
 $pdf->Cell(15,-10,'Taux : ',0,0);
 $pdf->Cell(0,-10,$data['Prix'],0,1);
 
-$pdf->SetX(130);
+$pdf->SetX(125);
 $pdf->Cell(30,10,'Montant XOF : ',0,0);
 $pdf->Cell(0,10,number_format($data['Montant_retrait'],0,' ',' ') . ' FCFA',0,1);
 
 $pdf->SetFont('Arial','B',11);
 $pdf->Cell(20,4,'En lettre : ',0,0);
-$pdf->Cell(100,4,convertir_en_lettres($data['Montant_retrait']).' francs CFA',0,1);
+$pdf->MultiCell(160,4, txt(convertir_en_lettres($data['Montant_retrait']).' francs CFA',0,1));
 $pdf->SetFont('Arial','B',11);
+$pdf->SetX(10);
 $pdf->Cell(32,18,'Signature Agent: ',0,0);
 $pdf->Cell(20,18,'___________________',0,1);
 $pdf->SetX(118);
 $pdf->SetFont('Arial','B',11);
-$pdf->Cell(32,-15,'Signature Client: ',0,0);
-$pdf->Cell(20,-15,'___________________',0,1);
+$pdf->Cell(32,-18,'Signature Client: ',0,0);
+$pdf->Cell(20,-18,'___________________',0,1);
 
 $pdf->Ln(10);
 

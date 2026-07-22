@@ -1,9 +1,13 @@
 <?php
 
 include "../serveur/bdd.php";
+
+//Vider les caches
+header("Cache-Control: no-cache, must-revalidate");
+header("Pragma: no-cache");
+
 session_start();
  
-
 
 function ajout_user($Prenom, $Nom, $Identifiant, $Password,$Role){
 
@@ -536,6 +540,77 @@ function dernier_solde_caisse($conn)
     }
 
     return 0;
+}
+
+/***----------FAIRE DEPOT OR-------------- */
+
+//----------AJOUTER OPERATIONS DEPOT------------
+
+function faire_depot_or(
+    $Date,
+    $Compte,
+    $Client,
+    $R_client,
+    $Prix,
+    $Quantite,
+    $Montant_depot,
+    $Montant_retrait,
+    $Ancien_solde ,
+    $Transactions,
+    $Regiment,
+    $Id_client,
+    $Utilisateur,
+    $Nature,
+    $Nom_R_client
+){
+
+global $conn;
+
+$Heure = date("H:i:s");
+
+$sql = "INSERT INTO mouvement_totales
+(
+    Date,
+    Compte,
+    Client,
+    R_client,
+    Prix,
+    Quantite,
+    Montant_depot,
+    Montant_retrait,
+    Solde,
+    Transactions,
+    Regiment,
+    Id_client,
+    Utilisateur,
+    Nature,
+    Heure,
+    Nom_R_client
+)
+
+VALUES
+(
+    '$Date',
+    '$Compte',
+    '$Client',
+    '$R_client',
+    '$Prix',
+    '$Quantite',
+    '$Montant_depot',
+    '$Montant_retrait',
+    '$Ancien_solde',
+    '$Transactions',
+    '$Regiment',
+    '$Id_client',
+    '$Utilisateur',
+    '$Nature',
+    '$Heure',
+    '$Nom_R_client'
+)";
+
+$result = mysqli_query($conn, $sql);
+
+return $result;
 }
 
 ?>

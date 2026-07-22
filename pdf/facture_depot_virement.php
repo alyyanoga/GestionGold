@@ -1,18 +1,12 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-function txt($texte)
-{
-    return iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $texte);
-}
 
 require('fpdf.php');
 include(__DIR__ . "/../functions/functions.php");
 
 $id = $_GET['Id'];
+$nature = $_GET['Nature'] ?? '';
 
-$sql = "SELECT * FROM mouvement_totales WHERE Regiment = '$id'";
+$sql = "SELECT * FROM mouvement_totales WHERE Regiment = '$id' AND Nature = '$nature' ";
 $result = mysqli_query($conn, $sql);
 
 $data = mysqli_fetch_assoc($result);
@@ -48,56 +42,41 @@ $pdf->SetFont('Arial','B',18);
 $pdf->SetX(12);
 $pdf->Cell(180,8,"RECU DE TRANSACTION","BT",1,'C');
 $pdf->SetFont('Arial','B',12);
-$pdf->Cell(30,8,'Nom Client : ',0,0);
+$pdf->Cell(50,8,'Nom Client : ',0,0);
 $pdf->Cell(100,8,$data['Client'],0,1);
 $pdf->SetFont('Arial','B',12);
-$pdf->Cell(30,6,'Beneficiaire : ',0,0);
+$pdf->Cell(50,6,'Beneficiaire : ',0,0);
 $pdf->Cell(100,6,$data['Nom_R_client'],0,1);
 $pdf->SetX(12);
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(180,8,"DETAILS OPERATIONS","BT",1,'C');
-
 $pdf->SetFont('Arial','B',11);
-$pdf->Cell(35,8,'Type Operation : ',0,0);
-$pdf->Cell(0,8,$data['Transactions'],0,1);
-
-$pdf->SetFont('Arial','B',11);
-$pdf->Cell(20,4,'Montant $$$ : ',0,0);
-$pdf->SetX(35);
-$pdf->Cell(0,4, number_format($data['Quantite'],0,' ',' '). ' $',0,1);
-$pdf->SetX(80);
-$pdf->SetFont('Arial','B',11);
-$pdf->Cell(0,-4,'Taux : ',0,0);
-$pdf->SetX(95);
-$pdf->Cell(0,-4,$data['Prix'],0,1);
-$pdf->SetX(125);
-$pdf->SetFont('Arial','B',11);
-$pdf->Cell(0,4,'Montant XOF : ',0,0);
-$pdf->SetX(155);
-$pdf->Cell(0,4,number_format($data['Montant_depot'],0,' ',' ') . ' FCFA',0,1);
-$pdf->SetFont('Arial','B',11);
-$pdf->Ln(3);
-$pdf->Cell(20,4,'En lettre : ',0,0);
-
-$pdf->MultiCell(160,4, txt(convertir_en_lettres($data['Montant_depot']).' francs CFA',0,1));
-$pdf->SetFont('Arial','B',11);
-$pdf->SetX(10);
-$pdf->Cell(32,15,'Signature Agent: ',0,0);
-$pdf->Cell(20,15,'___________________',0,1);
+$pdf->Cell(20,10,'Montant : ',0,0);
+$pdf->Cell(10,10, number_format($data['Montant_depot'],0,' ',' ') . ' FCFA',0,1);
 $pdf->SetX(118);
 $pdf->SetFont('Arial','B',11);
-$pdf->Cell(32,-15,'Signature Client: ',0,0);
-$pdf->Cell(20,-15,'___________________',0,1);
+$pdf->Cell(35,-11,'Type Operation : ',0,0);
+$pdf->Cell(15,-11,$data['Transactions'],0,1);
+$pdf->SetFont('Arial','B',11);
+$pdf->Cell(20,25,'En lettre : ',0,0);
+$pdf->Cell(100,25,convertir_en_lettres($data['Montant_depot']).' francs CFA',0,1);
+$pdf->SetFont('Arial','B',11);
+$pdf->Cell(32,5,'Signature Agent: ',0,0);
+$pdf->Cell(20,5,'___________________',0,1);
+$pdf->SetX(118);
+$pdf->SetFont('Arial','B',11);
+$pdf->Cell(32,-5,'Signature Client: ',0,0);
+$pdf->Cell(20,-5,'___________________',0,1);
 
-$pdf->Ln(4);
+$pdf->Ln(5);
 
-$pdf->Cell(190,20,'Merci pour votre confiance',0,1,'C');
+$pdf->Cell(190,10,'Merci pour votre confiance',0,1,'C');
 /**--------DEUXIEME FACTURE--------- */
-$pdf->Ln(6);
+$pdf->Ln(8);
 $pdf->SetFont('Arial','B',16);
 
-$pdf->Image('../assets/Icone/Billet.png',5,145,20,20);
-$pdf->Image('../assets/Icone/or.png',182,145,20,20);
+$pdf->Image('../assets/Icone/Billet.png',5,137,20,20);
+$pdf->Image('../assets/Icone/or.png',182,137,20,20);
 $pdf->SetFont('Arial','B',22);
 $pdf->SetX(55);
 $pdf->Cell(100,10,'DIALLO SERVICE',1,1,'C');
@@ -122,44 +101,33 @@ $pdf->SetFont('Arial','B',18);
 $pdf->SetX(12);
 $pdf->Cell(180,8,"RECU DE TRANSACTION","BT",1,'C');
 $pdf->SetFont('Arial','B',12);
-$pdf->Cell(30,8,'Nom Client : ',0,0);
+$pdf->Cell(50,8,'Nom Client : ',0,0);
 $pdf->Cell(100,8,$data['Client'],0,1);
 $pdf->SetFont('Arial','B',12);
-$pdf->Cell(30,6,'Beneficiaire : ',0,0);
+$pdf->Cell(50,6,'Beneficiaire : ',0,0);
 $pdf->Cell(100,6,$data['Nom_R_client'],0,1);
 $pdf->SetX(12);
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(180,8,"DETAILS OPERATIONS","BT",1,'C');
 $pdf->SetFont('Arial','B',11);
-
-$pdf->SetFont('Arial','B',11);
-$pdf->Cell(35,6,'Type Operation : ',0,0);
-$pdf->Cell(0,6,$data['Transactions'],0,1);
-
-$pdf->Cell(25,8,'Montant $$$ : ',0,0);
-$pdf->Cell(0,8, number_format($data['Quantite'],0,' ',' '). ' $',0,1);
-
-$pdf->SetX(80);
-$pdf->Cell(15,-10,'Taux : ',0,0);
-$pdf->Cell(0,-10,$data['Prix'],0,1);
-
-$pdf->SetX(125);
-$pdf->Cell(30,10,'Montant XOF : ',0,0);
-$pdf->Cell(0,10,number_format($data['Montant_depot'],0,' ',' ') . ' FCFA',0,1);
-
-$pdf->SetFont('Arial','B',11);
-$pdf->Cell(20,4,'En lettre : ',0,0);
-$pdf->MultiCell(160,4, txt(convertir_en_lettres($data['Montant_depot']).' francs CFA',0,1));
-$pdf->SetFont('Arial','B',11);
-$pdf->SetX(10);
-$pdf->Cell(32,18,'Signature Agent: ',0,0);
-$pdf->Cell(20,18,'___________________',0,1);
+$pdf->Cell(20,10,'Montant : ',0,0);
+$pdf->Cell(10,10, number_format($data['Montant_depot'],0,' ',' ') . ' FCFA',0,1);
 $pdf->SetX(118);
 $pdf->SetFont('Arial','B',11);
-$pdf->Cell(32,-18,'Signature Client: ',0,0);
-$pdf->Cell(20,-18,'___________________',0,1);
+$pdf->Cell(35,-11,'Type Operation : ',0,0);
+$pdf->Cell(15,-11,$data['Transactions'],0,1);
+$pdf->SetFont('Arial','B',11);
+$pdf->Cell(20,25,'En lettre : ',0,0);
+$pdf->Cell(100,25,convertir_en_lettres($data['Montant_depot']).' francs CFA',0,1);
+$pdf->SetFont('Arial','B',11);
+$pdf->Cell(32,4,'Signature Agent: ',0,0);
+$pdf->Cell(20,4,'___________________',0,1);
+$pdf->SetX(118);
+$pdf->SetFont('Arial','B',11);
+$pdf->Cell(32,-4,'Signature Client: ',0,0);
+$pdf->Cell(20,-4,'___________________',0,1);
 
-$pdf->Ln(10);
+$pdf->Ln(5);
 
 $pdf->Cell(190,10,'Merci pour votre confiance',0,1,'C');
 

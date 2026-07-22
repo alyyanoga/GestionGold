@@ -42,7 +42,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="_a_gold.php">
 
                     <i class="bi bi-gem"></i>
 
