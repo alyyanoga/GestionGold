@@ -191,7 +191,12 @@ $result2 = mysqli_query($conn, $sql2);
                   <div class="btn-valider">
                     <button type="submit" name="btn_valider_caisse" class="btn_valider_caisse" id="btn_valider_caisse" disabled> VALIDE</button>
                   </div>
+                  
                 </div>
+                  <div class="lbl-fiel-solde">
+                      <label class="lbl">Solde Disponible:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                      <input type="text" class="soldeDispo" name="txtSoldeDispo" id="txtSoldeDispo" value="<?php echo number_format($caisse_data['Solde'] ?? 0, 0, ',', ' '); ?>" disabled >
+                  </div>
               </form>
             </div>
           </div>

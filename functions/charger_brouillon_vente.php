@@ -2,7 +2,7 @@
 
 include("../functions/functions.php");
 
-$sql = "SELECT * FROM brouillon_achat_or ORDER BY Id DESC";
+$sql = "SELECT * FROM brouillon_vente_or ORDER BY Id DESC";
 $result = mysqli_query($conn, $sql);
 
 while($row = mysqli_fetch_assoc($result)) {

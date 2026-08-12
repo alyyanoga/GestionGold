@@ -406,7 +406,37 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
 
                                     </button>
                                 
-                                    <?php } ?>
+                                    <?php 
+                                    } 
+                                    else if($row['Transactions'] == 'VENTE OR')
+                                        {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/revoir_facture_v_gold.php?rgmt=<?= urlencode($row['Regiment']) ?>&date=<?= urlencode($row['Date']) ?>&heure=<?= urlencode($row['Heure']) ?>','_blank')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+                                
+                                    <?php 
+                                    } 
+                                    else if (
+                                        $row['Transactions'] == 'RETRAIT ARGENT' &&
+                                        $row['Nature'] == 'RETRAIT ARGENT CLIENT DIRECT'
+                                    ) {
+                                    ?>
+                                    <button
+                                    onclick="window.open('../pdf/revoir_facture_retrait_client_direct.php?Id=<?= $row['Regiment'] ?>&Nature=<?= urlencode('RETRAIT ARGENT CLIENT DIRECT') ?>')"
+                                    class="btn-print">
+
+                                    <i class="bi bi-printer"></i>
+
+                                    </button>
+
+                                    <?php
+                                    }
+                                    ?>
                                      </td>
 
                                     <td style="text-align: left;"><?php echo $row['Date']; ?></td>
@@ -427,7 +457,7 @@ if (isset($_GET['txtIdClient']) && !empty($_GET['txtIdClient'])) {
                         <?php } else { ?>
 
                             <tr>
-                                <td colspan="4" >Aucune Operation</td>
+                                <td colspan="11" >Aucune Operation</td>
                             </tr>
 
                         <?php } ?>

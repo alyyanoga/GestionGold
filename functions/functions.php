@@ -613,6 +613,73 @@ $result = mysqli_query($conn, $sql);
 return $result;
 }
 
+//-----------OPERATION VENTE OR----------//
+function faire_vente_or(
+    $Date,
+    $Compte,
+    $Client,
+    $R_client,
+    $Prix,
+    $Quantite,
+    $Montant_depot,
+    $Montant_retrait,
+    $Ancien_solde ,
+    $Transactions,
+    $Regiment,
+    $Id_client,
+    $Utilisateur,
+    $Nature,
+    $Nom_R_client
+){
+
+global $conn;
+
+$Heure = date("H:i:s");
+
+$sql = "INSERT INTO mouvement_totales
+(
+    Date,
+    Compte,
+    Client,
+    R_client,
+    Prix,
+    Quantite,
+    Montant_depot,
+    Montant_retrait,
+    Solde,
+    Transactions,
+    Regiment,
+    Id_client,
+    Utilisateur,
+    Nature,
+    Heure,
+    Nom_R_client
+)
+
+VALUES
+(
+    '$Date',
+    '$Compte',
+    '$Client',
+    '$R_client',
+    '$Prix',
+    '$Quantite',
+    '$Montant_depot',
+    '$Montant_retrait',
+    '$Ancien_solde',
+    '$Transactions',
+    '$Regiment',
+    '$Id_client',
+    '$Utilisateur',
+    '$Nature',
+    '$Heure',
+    '$Nom_R_client'
+)";
+
+$result = mysqli_query($conn, $sql);
+
+return $result;
+}
 ?>
 
 

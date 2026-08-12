@@ -92,7 +92,7 @@ function selectionnerVirementClient(Nom, IdClient, Numero, Solde){
     //window.location.href = window.location.pathname + "?txtIdClient=" + IdClient;
 }
 
-
+//SELECTIONNER CLIENT GOLD
 function selectionnerClientGold(Nom, rep_client, Numero, IdClient, SoldeClient){
 
     let typeOperation = document.getElementById("type_operation").value;
@@ -103,7 +103,7 @@ function selectionnerClientGold(Nom, rep_client, Numero, IdClient, SoldeClient){
     document.getElementById("rep_client").value = rep_client;
     document.getElementById("numero_compte").value = Numero;
     document.getElementById("txtIdClient").value = IdClient;
-    document.getElementById("txtSoldeClient").value = SoldeClient;
+    document.getElementById("solde_client").value = SoldeClient;
 
     document.getElementById("modalClient").style.display = "none";
 
@@ -118,6 +118,7 @@ function selectionnerClientGold(Nom, rep_client, Numero, IdClient, SoldeClient){
             "&txt_rep_client=" + encodeURIComponent(rep_client) +
             "&txt_numero_compte=" + encodeURIComponent(Numero) +
             "&txtIdClient=" + encodeURIComponent(IdClient) +
+            "&solde_client=" + encodeURIComponent(SoldeClient) +
             "&txt_type_operation=" + encodeURIComponent(typeOperation)
     })
     .then(response => response.json())
@@ -774,10 +775,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // 🔵 Prix unitaire
     function calculerPrixUnitaire() {
 
-         let base = nombre(document.getElementById("base"));
+       let base = nombre(document.getElementById("base"));
     let c = nombre(carat);
 
-    return (base / 24) * c;
+    let prix = (base / 24) * c;
+
+    // Affichage dans le champ
+    prixInput.value = Math.floor(prix).toLocaleString('fr-FR');
+
+    return prix;
     }
 
     // 🔴 Montant
@@ -842,7 +848,12 @@ densite.value = (Math.trunc(densiteReelle * 100) / 100).toFixed(2);
 
     poidsAir.addEventListener("input", calculerDensite);
     poidsEau.addEventListener("input", calculerDensite);
+    carat.addEventListener("input", function () {
+    calculerPrixUnitaire();
+    calculerMontant();
+});
     carat.addEventListener("input", calculerMontant);
+
 });
 
 //----------PARCOURIR LES CHAMPS INPUTS AVEC BOUTON ENTRER
@@ -1136,6 +1147,139 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+
+/**-------TRANSFERT DANS TABLE BROUILLON VENTE + REGIMENT----------- */
+document.addEventListener("DOMContentLoaded", function () {
+
+    let btn = document.getElementById("btn_valide_vente");
+
+    if (!btn) {
+        return;
+    }
+      btn.addEventListener("click", function (e) {
+
+    e.preventDefault();
+
+    /** -------------------------
+     * 1. transaction_or
+     * ------------------------- */
+    let xhr1 = new XMLHttpRequest();
+
+    xhr1.open("POST", "../functions/transfert_table_transaction_totale_or.php", true);
+
+    xhr1.setRequestHeader(
+        "Content-Type",
+        "application/x-www-form-urlencoded"
+    );
+
+    xhr1.onload = function () {
+
+        console.log("STEP 1:", this.responseText);
+
+        let rep1 = JSON.parse(this.responseText);
+
+        if (rep1.success) {
+
+            /** -------------------------
+             * 2. brouillon
+             * ------------------------- */
+            let xhr2 = new XMLHttpRequest();
+
+            xhr2.open("POST", "../functions/transfert_brouillon_vente.php", true);
+
+            xhr2.setRequestHeader(
+                "Content-Type",
+                "application/x-www-form-urlencoded"
+            );
+
+            xhr2.onload = function () {
+
+                console.log("STEP 2:", this.responseText);
+
+                let rep2 = JSON.parse(this.responseText);
+
+                if (rep2.success) {
+
+                    alert("Transfert effectué");
+
+                    /** ------------------------
+                     *  REGIMENT
+                     * ------------------------ */
+                    let rgmt = document.getElementById("rgmt").value;
+
+                    let xhr3 = new XMLHttpRequest();
+
+                    xhr3.open("POST", "../functions/save_regiment.php", true);
+
+                    xhr3.setRequestHeader(
+                        "Content-Type",
+                        "application/x-www-form-urlencoded"
+                    );
+
+                    xhr3.send("txt_rgmt=" + encodeURIComponent(rgmt));
+
+                      // Ouvrir la facture
+                    window.open(
+                        "../pdf/facture_v_gold.php?rgmt=" + encodeURIComponent(rgmt),
+                        "_blank"
+                    );
+
+                    /** ------------------------
+                     * RESET UI
+                     * ------------------------ */
+
+                    document.getElementById("tableauTransaction").innerHTML = "";
+
+                    document.getElementById("txtIdClient").value = "";
+                    document.getElementById("txt_prix_unitaire").value = "";
+                    document.getElementById("nom_client").value = "";
+                    document.getElementById("rep_client").value = "";
+
+                    let rgmtInput = document.getElementById("rgmt");
+                    let valeur = parseInt(rgmtInput.value || 0) + 1;
+                    rgmtInput.value = String(valeur).padStart(4, "0");
+
+                    document.getElementById("numero_compte").value = "";
+                    document.getElementById("type_operation").value = "Choisir";
+                    document.getElementById("numero_barre").value = "0";
+                    document.getElementById("solde_client").value = "0";
+
+                    document.getElementById("base").value = "";
+                    document.getElementById("poids_air").value = "";
+                    document.getElementById("poids_eau").value = "";
+                    document.getElementById("densite").value = "";
+                    document.getElementById("carat").value = "";
+                    document.getElementById("achat_gold_montant").value = "";
+
+                    document.getElementById("base_montant").value = "";
+                    document.getElementById("poids_air_montant").value = "";
+                    document.getElementById("poids_eau_montant").value = "";
+                    document.getElementById("densite_montant").value = "";
+                    document.getElementById("carat_montant").value = "";
+                    document.getElementById("somme_montant").value = "";
+                    
+                    rechargerBrouillonVente();
+                    ouvrirModalBrouillon();
+
+                } else {
+                    alert(rep2.message);
+                }
+            };
+
+            xhr2.send();
+
+        } else {
+            alert(rep1.message);
+        }
+    };
+
+    xhr1.send();
+
+});
+
+});
+
+
 // VISUALISATION DE LA FACTURE AVANT VALIDER 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -1184,6 +1328,24 @@ function rechargerBrouillon() {
     xhr.send();
 }
 
+function rechargerBrouillonVente() {
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("GET", "../functions/charger_brouillon_vente.php", true);
+
+    xhr.onload = function () {
+
+        if (this.status == 200) {
+
+            document.getElementById("tbodyBrouillon").innerHTML =
+                this.responseText;
+        }
+    };
+
+    xhr.send();
+}
+
 /*----------FORMULAIRE VALIDATION FINALE----------- */
 function fermerModalValidation(){
 
@@ -1214,7 +1376,11 @@ document.addEventListener("click", function (e) {
     document.getElementById("txt_Client").value = cells[3].innerText;
     document.getElementById("txt_Rep_client").value = cells[4].innerText;
     
-    let quantite = parseFloat(cells[5].innerText.replace(/\s/g, ''));
+    let quantite = parseFloat(
+    cells[5].innerText
+        .replace(/\s/g, '')
+        .replace(',', '.')
+) || 0;
 
     document.getElementById("txt_Quantite").value = quantite;
     document.getElementById("txt_Base").value = cells[6].innerText;
@@ -1274,6 +1440,65 @@ document.addEventListener("DOMContentLoaded", function () {
                 fermerModalBrouillon();
                
                 rechargerBrouillon();
+                chargerTableTemp();
+                active_input();
+               
+
+            } else {
+
+                alert(data.message);
+
+            }
+
+        })
+        .catch(error => {
+
+            console.error(error);
+            alert("Erreur de communication avec le serveur.");
+
+        });
+
+    });
+
+});
+
+
+/**--------MODIFICATION OPERATION BROUILLON VENTE----------- */
+document.addEventListener("DOMContentLoaded", function () {
+
+    const btn = document.getElementById("btn_modif_vente");
+
+    btn.addEventListener("click", function () {
+
+        let Rgmt = document.getElementById("txt_Rgmt").value.trim();
+
+        if (Rgmt === "") {
+            alert("Regiment introuvable.");
+            return;
+        }
+
+        fetch("../functions/modification_brouillon_vente.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "Rgmt=" + encodeURIComponent(Rgmt)
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            if (data.success) {
+            document.getElementById("numero_compte").value = data.numero_compte;
+            document.getElementById("nom_client").value = data.client;
+            document.getElementById("rep_client").value = data.rep_client;
+            document.getElementById("rgmt").value = data.rgmt;
+            document.getElementById("type_operation").value = data.type_operation;
+            document.getElementById("solde_client").value = data.solde_client;
+
+                fermerModalValidation();
+                fermerModalBrouillon();
+               
+                rechargerBrouillonVente();
                 chargerTableTemp();
                 active_input();
                
@@ -1459,6 +1684,54 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
             body: "txt_type_operation=" + encodeURIComponent(mouvement)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Erreur HTTP : " + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Réponse PHP :", data);
+
+            if (!data.success) {
+                console.error(data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Erreur AJAX :", error);
+        });
+
+    });
+
+});
+
+//----Modification Representant client dans la base temptransactionor---///
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Récupérer le select
+    const typeOperation = document.getElementById("rep_client");
+
+    // Vérifier qu'il existe
+    if (!typeOperation) {
+        console.error("❌ Le champ #Rep Client est introuvable.");
+        return;
+    }
+
+    // Détecter le changement
+    typeOperation.addEventListener("change", function () {
+
+        let RepClient = this.value;
+
+        console.log("Nouveau Rep Client :", RepClient);
+
+        fetch("../functions/modifier_rep_client.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "txt_rep_client=" + encodeURIComponent(RepClient)
         })
         .then(response => {
             if (!response.ok) {

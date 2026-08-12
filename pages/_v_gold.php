@@ -30,7 +30,7 @@
     $result = mysqli_query($conn, $sql);
 
       /* Charger les donnée Table Brouillons pour Modal */
-    $sql_brouillon = "SELECT * FROM brouillon_achat_or ORDER BY Id DESC";
+    $sql_brouillon = "SELECT * FROM brouillon_vente_or ORDER BY Id DESC";
     $result_brouillon = mysqli_query($conn, $sql_brouillon);
 
 
@@ -60,7 +60,7 @@
     }
 
      /* FAIRE LE DEPOT OR DANS LE COMPTE CLIENT */
-    if (isset($_POST['btn_finale_achat'])) {
+    if (isset($_POST['btn_finale_vente'])) {
 
     $Date = $_POST['txt_Date'] ?? '';
     $Compte = $_POST['txt_numero'] ?? '';
@@ -69,7 +69,7 @@
 
     $Prix = cleanNumber($_POST['txt_Base'] ?? 0);
     $Quantite = cleanNumber($_POST['txt_Quantite'] ?? 0);
-    $Montant_depot = cleanNumber($_POST['txt_Montant'] ?? 0);
+    $Montant_retrait = cleanNumber($_POST['txt_Montant'] ?? 0);
 
     $Ancien_solde = cleanNumber($_POST['txt_solde_client'] ?? 0);
     $Ancien_solde_caisse = cleanNumber($_POST['txt_solde_caisse'] ?? 0);
@@ -78,101 +78,26 @@
     $Id_client = $_POST['txt_id_client'] ?? '';
     $Nom_R_client =  $R_client;
 
-    $Nature = "DEPOT OR";
+    $Nature = "VENTE OR";
     $Transactions = $Nature;
     $Utilisateur = ($_SESSION['Prenom'] ?? '') . " " . ($_SESSION['Nom'] ?? '');
 
 
-    if ($Client == "CLIENT DIRECT") {
+        $Montant_depot = 0;
 
-        $Montant_retrait = $Montant_depot;
-
-        // DEPOT
-        $soldeClient = $Ancien_solde + $Montant_depot;
-
-        $save1 = faire_depot_or(
-            $Date,
-            $Compte,
-            $Client,
-            "DEPOT OR / ".$R_client,
-            $Prix,
-            $Quantite,
-            $Montant_depot,
-            0,
-            $soldeClient,
-            $Transactions,
-            $Regiment,
-            $Id_client,
-            $Utilisateur,
-            $Nature,
-            $Nom_R_client
-        );
-
-        // RETRAIT
-        $soldeClient -= $Montant_retrait;
-
-        $save2 = modifier_solde_client($Id_client, $soldeClient);
-
-        $save3 = faire_retrait(
-            $Date,
-            $Compte,
-            $Client,
-            "RETRAIT ARGENT / ".$R_client,
-            0,
-            0,
-            0,
-            $Montant_retrait,
-            $soldeClient,
-            "RETRAIT ARGENT",
-            $Regiment,
-            $Id_client,
-            $Utilisateur,
-            "RETRAIT ARGENT CLIENT DIRECT",
-            $Nom_R_client
-        );
-
-        // CAISSE
-        $soldeCaisse = $Ancien_solde_caisse - $Montant_retrait;
-
-        $save4 = modifier_solde_caisse($soldeCaisse);
-
-        $save5 = ajout_caisse(
-            $Date,
-            $Client ."/ ".$Nom_R_client,
-            0,
-            $Montant_retrait,
-            $soldeCaisse,
-            "ACHAT OR ",
-            $Utilisateur
-        );
-
-        $save = ($save1 && $save2 && $save3 && $save4 && $save5);
-
-        if($save3){
-             echo "
-            <script>
-            window.open('../pdf/facture_retrait_client_direct.php?Id={$Regiment}&Nature=" . urlencode("RETRAIT ARGENT CLIENT DIRECT") . "', '_blank');
-            </script>
-            ";
-        }
-
-    } else {
-
-        $Montant_retrait = 0;
-
-        $nouveau_solde = $Ancien_solde + $Montant_depot;
+        $nouveau_solde = $Ancien_solde - $Montant_retrait;
 
         $save1 = modifier_solde_client($Id_client, $nouveau_solde);
 
-        $save2 = faire_depot_or(
+        $save2 = faire_vente_or(
             $Date,
             $Compte,
             $Client,
-            "DEPOT OR",
+            "VENTE OR",
             $Prix,
             $Quantite,
-            $Montant_depot,
             0,
+            $Montant_retrait,
             $nouveau_solde,
             $Transactions,
             $Regiment,
@@ -191,7 +116,7 @@
 
         if ($id_op > 0) {
 
-            $sqlDel = "DELETE FROM brouillon_achat_or WHERE Id = '$id_op'";
+            $sqlDel = "DELETE FROM brouillon_vente_or WHERE Id = '$id_op'";
             $resultDel = mysqli_query($conn, $sqlDel);
 
             if (!$resultDel) {
@@ -199,10 +124,10 @@
             }
         }
 
-        echo "<script>window.location='_a_gold.php';</script>";
+        echo "<script>window.location='_v_gold.php';</script>";
         exit;
     }
-}
+
 
     
     ?>
@@ -211,7 +136,7 @@
        
 
      <?php
-     $page = "_a_gold";
+     $page = "_v_gold";
      include "../includes/nav_gold.php";
      ?>
     <div class="container_gold">
@@ -319,7 +244,7 @@
                         </div>
                         <div class="groupe_btn">
 
-                            <button type="button" name="btn_valide_achat" class="btn_valide_gold" id="btn_valide_achat"> Valider</button>
+                            <button type="button" name="btn_valide_achat" class="btn_valide_gold" id="btn_valide_vente"> Valider</button>
                             <button type="button" name="btn_affiche_achat" class="btn_affiche_gold" id="btn_affiche_achat"> Afficher</button>
                         </div>
                     </div>
@@ -522,15 +447,15 @@
                                 <label for="">CFA</label>
                             </div>
                             <div class="input-content-validation-nine">
-                                <button type="submit" name="btn_finale_achat" class="btn_finale_achat" id="btn_finale_achat"> Valider</button>
+                                <button type="submit" name="btn_finale_vente" class="btn_finale_achat" id="btn_finale_vente"> Valider</button>
                             </div>
                         </div>
                         <div class="btn-content-modif-supprimer">
                             <div class="btn_supprimer_validation">
-                                <button type="button" name="btn_supprimer_achat" class="btn_supprimer_achat" id="btn_supprimer_achat"> Supprimer</button>
+                                <button type="button" name="btn_supprimer_vente" class="btn_supprimer_achat" id="btn_supprimer_achat"> Supprimer</button>
                             </div>
                             <div class="btn_modifier_validation">
-                                <button type="button" name="btn_modif_achat" class="btn_modif_achat" id="btn_modif_achat"> Modifier</button>
+                                <button type="button" name="btn_modif_vente" class="btn_modif_achat" id="btn_modif_vente"> Modifier</button>
                             </div>
                         </div>
                         

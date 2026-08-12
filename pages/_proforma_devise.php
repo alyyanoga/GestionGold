@@ -89,7 +89,7 @@ if (isset($_POST['btn_voir_facture'])) {
             echo "
             <script>
             window.location='_proforma_devise.php';
-            window.open('../pdf/facture_proforma_devise.php?Id=$idAchat');
+            window.open('../pdf/facture_proforma_devise.php?Id=$Regiment');
             
             </script>
             ";

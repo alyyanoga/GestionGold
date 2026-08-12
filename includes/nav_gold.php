@@ -19,7 +19,7 @@
             </li>
 
             <li>
-                <a href="../pages/_vente_gold.php"  class="<?php if($page == '_vente_gold') echo 'active'; ?>">
+                <a href="../pages/_v_gold.php"  class="<?php if($page == '_v_gold') echo 'active'; ?>">
 
                    <i class="bi bi-clipboard-minus-fill"></i>
 
